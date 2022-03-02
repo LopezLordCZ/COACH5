@@ -14,6 +14,7 @@ import com.example.coach5.databinding.FragmentFirstBinding;
 public class FirstFragment extends Fragment {
 
     private FragmentFirstBinding binding;
+    private FragmentFirstBinding test;
 
     @Override
     public View onCreateView(
