@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserLogin">
+    tools:context=".UserRegister">
 
     <TextView
         android:id="@+id/title"
@@ -39,12 +39,51 @@
         />
 
     <EditText
-        android:id="@+id/email"
+        android:id="@+id/userName"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:ems="10"
+        android:hint="Name"
+        android:inputType="textPersonName"
+        android:textSize="24sp"
+        app:layout_anchor="@+id/motto"
+        app:layout_anchorGravity="bottom|center"
+        />
+
+    <EditText
+        android:id="@+id/userSurname"
         android:layout_width="360dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="250dp"
         android:ems="10"
-        android:hint="Email Address"
+        android:hint="Surname"
+        android:inputType="textPersonName"
+        android:textSize="24sp"
+        app:layout_anchor="@+id/motto"
+        app:layout_anchorGravity="bottom|center"
+        />
+
+    <EditText
+        android:id="@+id/userAge"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
+        android:ems="10"
+        android:hint="Age"
+        android:textSize="24sp"
+        android:inputType="number"
+        app:layout_anchor="@+id/motto"
+        app:layout_anchorGravity="bottom|center"
+        />
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="350dp"
+        android:ems="10"
+        android:hint="Email"
         android:inputType="textEmailAddress"
         android:textSize="24sp"
         app:layout_anchor="@+id/motto"
@@ -58,7 +97,7 @@
         android:id="@+id/password"
         android:layout_width="360dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="400dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
@@ -67,47 +106,67 @@
         app:layout_anchorGravity="bottom|center"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email"
+        app:layout_constraintTop_toBottomOf="@+id/surname"
+        />
+
+    <EditText
+        android:id="@+id/repeatPassword"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="450dp"
+        android:ems="10"
+        android:hint="Repeat Password"
+        android:inputType="textPassword"
+        android:textSize="24sp"
+        app:layout_anchor="@+id/email"
+        app:layout_anchorGravity="bottom|center"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/surname"
         />
 
     <Button
         android:id="@+id/login"
         android:layout_width="360dp"
         android:layout_height="70dp"
-        android:layout_marginTop="360dp"
+        android:layout_marginTop="520dp"
         android:backgroundTint="#9C27B0"
-        android:text="Login"
+        android:text="Register"
+        android:textColor="#FFFFFF"
         android:textSize="26sp"
         android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        app:layout_anchor="@+id/password"
+        app:layout_anchor="@+id/motto"
         app:layout_anchorGravity="bottom|center"
         />
 
-    <TextView
-        android:id="@+id/forgotpassword"
+    <RadioGroup
+        android:id="@+id/accountType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginTop="440dp"
-        android:text="Forgot Password?"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_anchor="@+id/password"
-        app:layout_anchorGravity="start|bottom" />
+        app:layout_anchor="@+id/motto"
+        app:layout_anchorGravity="bottom|center"
+        android:layout_marginTop="150dp"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginTop="440dp"
-        android:text="Register"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_anchor="@+id/login"
-        app:layout_anchorGravity="end|bottom"
-        />
+        <RadioButton
+            android:id="@+id/User"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="User"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            />
+
+        <RadioButton
+            android:id="@+id/Coach"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Coach"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            />
+
+    </RadioGroup>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -116,11 +175,8 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:layout_anchor="@+id/motto"
-        android:layout_marginTop="170sp"
+        android:layout_marginTop="300sp"
         app:layout_anchorGravity="bottom|center"
-        tools:ignore="MissingConstraints"
         />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-
