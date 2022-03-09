@@ -9,6 +9,7 @@ public class User {
     }
 
     public User(String finalAccountType, String name, String surname, String age, String email) {
+        this.finalAccountType = finalAccountType;
         this.name = name;
         this.surname = surname;
         this.age = age;

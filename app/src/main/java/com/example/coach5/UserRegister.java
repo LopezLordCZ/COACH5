@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class UserRegister extends AppCompatActivity implements View.OnClickListener {
@@ -29,6 +29,7 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
     private RadioButton user, coach;
     private ProgressBar progressBar;
 
+    private DatabaseReference reference;
     private FirebaseAuth mAuth;
 
     @Override
@@ -37,6 +38,7 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_user_register);
 
         mAuth = FirebaseAuth.getInstance();
+        reference = FirebaseDatabase.getInstance().getReference("Users");
 
         title = (TextView) findViewById(R.id.title);
         title.setOnClickListener(this);
@@ -146,7 +148,7 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
                 if (task.isSuccessful()) {
                     User user = new User(finalAccountType, name, surname, age, email);
 
-                    FirebaseDatabase.getInstance().getReference("")
+                    FirebaseDatabase.getInstance().getReference("Users")
                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                             .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

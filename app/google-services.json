@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "334620900339",
+    "firebase_url": "https://coach5-93ea0-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "coach5-93ea0",
+    "storage_bucket": "coach5-93ea0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:334620900339:android:4c5bc6910d357e77fdb086",
+        "android_client_info": {
+          "package_name": "com.example.coach5"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "334620900339-hpc9badq2lkbfblha9gob6di3oi1nsmo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5OoQyxHyKYxyTT9TW-aowz2QZ3prOrdk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "334620900339-hpc9badq2lkbfblha9gob6di3oi1nsmo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
