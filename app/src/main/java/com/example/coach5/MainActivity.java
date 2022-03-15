@@ -3,26 +3,16 @@ package com.example.coach5;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
-
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-import com.example.coach5.databinding.ActivityUserRegisterBinding;
-
-import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView register;
+    private Button login;
 
 
     @Override
@@ -32,15 +22,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         register = (TextView) findViewById(R.id.register);
         register.setOnClickListener(this);
+        login = (Button) findViewById(R.id.login);
+        login.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-       switch(v.getId()) {
-           case R.id.register:
-               startActivity(new Intent(this, UserRegister.class));
-               break;
-
-       }
+        switch(v.getId()) {
+            case R.id.register:
+                startActivity(new Intent(this, UserRegister.class));
+                break;
+            case R.id.login:
+                startActivity(new Intent(this, Homescreen.class));
+                break;
+        }
     }
 }

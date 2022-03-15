@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.COACH5">
         <activity
+            android:name=".Homescreen"
+            android:exported="false" />
+        <activity
+            android:name=".Profilescreen"
+            android:exported="false"/>
+        <activity
             android:name=".UserRegister"
             android:exported="false" />
         <activity

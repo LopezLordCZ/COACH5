@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserLogin">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp"
+        android:fontFamily="sans-serif-black"
+        android:text="COACH5"
+        android:textAlignment="center"
+        android:textColor="@color/purple_700"
+        android:textSize="60sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/motto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Find your coach right now!"
+        android:textAlignment="center"
+        android:textColor="@color/purple_500"
+        android:textSize="20sp"
+        android:textStyle="italic"
+        app:layout_anchor="@+id/title"
+        app:layout_anchorGravity="bottom|center"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        />
+
+    <Button
+        android:id="@+id/browse"
+        android:layout_width="360dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="350dp"
+        android:backgroundTint="#9C27B0"
+        android:text="browse"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        app:layout_anchor="@+id/picture"
+        app:layout_anchorGravity="bottom|center"
+        />
+
+    <Button
+        android:id="@+id/friends"
+        android:layout_width="360dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="420dp"
+        android:backgroundTint="#9C27B0"
+        android:text="Friends"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        app:layout_anchor="@+id/browse"
+        app:layout_anchorGravity="bottom|center"
+        />
+
+    <Button
+        android:id="@+id/profile"
+        android:layout_width="360dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="490dp"
+        android:backgroundTint="#9C27B0"
+        android:text="Profile"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        app:layout_anchor="@+id/friends"
+        app:layout_anchorGravity="bottom|center"
+        />
+
+    <ImageView
+        android:id="@+id/picture"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_marginTop="120dp"
+        app:layout_anchor="@+id/motto"
+        app:layout_anchorGravity="bottom|center"
+        app:srcCompat="@drawable/profile_pic"
+        />
+    <TextView
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="560dp"
+        android:text="Log out"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_anchor="@+id/profile"
+        app:layout_anchorGravity="end|bottom"
+        />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
