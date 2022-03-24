@@ -32,6 +32,8 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
     private DatabaseReference reference;
     private FirebaseAuth mAuth;
 
+    //Test
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
