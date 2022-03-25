@@ -128,12 +128,12 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        if(!repeatPassword.equals(password)) {
+        if (!repeatPassword.equals(password)) {
             editTextRepeatPassword.setError("Passwords does not match!");
             editTextRepeatPassword.requestFocus();
         }
 
-        if(user.isChecked()) {
+        if (user.isChecked()) {
             accountType[0] = "User";
         } else if (coach.isChecked()) {
             accountType[0] = "Coach";
@@ -143,52 +143,51 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
         String finalAccountType = accountType[0];
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (accountType[0].equals("User")) {
-                    if (task.isSuccessful()) {
-                        User user = new User(finalAccountType, name, surname, age, email);
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (accountType[0].equals("User")) {
+                            if (task.isSuccessful()) {
+                                User user = new User(finalAccountType, name, surname, age, email);
 
-                        FirebaseDatabase.getInstance().getReference("Users")
-                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(UserRegister.this, "User has been successfully registered", Toast.LENGTH_LONG).show();
-                                    //Back to login
-                                } else {
-                                    Toast.makeText(UserRegister.this, "Registration failed, try again!", Toast.LENGTH_LONG).show();
-                                }
+                                FirebaseDatabase.getInstance().getReference("Users")
+                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(UserRegister.this, "User has been successfully registered", Toast.LENGTH_LONG).show();
+                                            //Back to login
+                                        } else {
+                                            Toast.makeText(UserRegister.this, "Registration failed, try again!", Toast.LENGTH_LONG).show();
+                                        }
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(UserRegister.this, "Registration failed, try again!", Toast.LENGTH_LONG).show();
                                 progressBar.setVisibility(View.GONE);
                             }
-                        });
-                    } else{
-                        Toast.makeText(UserRegister.this, "Registration failed, try again!", Toast.LENGTH_LONG).show();
-                        progressBar.setVisibility(View.GONE);
-                    }
-                } else if (accountType[0].equals("Coach")) {
-                    if (task.isSuccessful()) {
-                        Coach coach = new Coach(finalAccountType, name, surname, age, email);
+                        } else if (accountType[0].equals("Coach")) {
+                            if (task.isSuccessful()) {
+                                Coach coach = new Coach(finalAccountType, name, surname, age, email);
 
-                        FirebaseDatabase.getInstance().getReference("Coaches")
-                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                .setValue(coach).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(UserRegister.this, "Coach has been successfully registered", Toast.LENGTH_LONG).show();
-                                    //Back to login
-                                } else {
-                                    Toast.makeText(UserRegister.this, "Registration failed, try again!", Toast.LENGTH_LONG).show();
-                                }
-                                progressBar.setVisibility(View.GONE);
+                                FirebaseDatabase.getInstance().getReference("Coaches")
+                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .setValue(coach).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(UserRegister.this, "Coach has been successfully registered", Toast.LENGTH_LONG).show();
+                                            //Back to login
+                                        } else {
+                                            Toast.makeText(UserRegister.this, "Registration failed, try again!", Toast.LENGTH_LONG).show();
+                                        }
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+                                });
                             }
-                        });
+                        }
                     }
-                }
-
-            }
-        });
+                });
     }
 }
