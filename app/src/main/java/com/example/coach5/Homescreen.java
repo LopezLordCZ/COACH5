@@ -40,7 +40,7 @@ public class Homescreen extends AppCompatActivity implements View.OnClickListene
                 startActivity(new Intent(this, Profilescreen.class));
                 break;
             case R.id.friends:
-                startActivity(new Intent(this, Chat.class));
+                startActivity(new Intent(this, Friends.class));
                 break;
         }
     }
