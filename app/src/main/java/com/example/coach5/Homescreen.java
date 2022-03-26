@@ -15,6 +15,7 @@ public class Homescreen extends AppCompatActivity implements View.OnClickListene
     private TextView logout;
     private Button browse;
     private Button profile;
+    private Button friends;
 
 
     @Override
@@ -28,6 +29,8 @@ public class Homescreen extends AppCompatActivity implements View.OnClickListene
         browse.setOnClickListener(this);
         profile = (Button) findViewById(R.id.profile);
         profile.setOnClickListener(this);
+        friends = (Button) findViewById(R.id.friends);
+        friends.setOnClickListener(this);
     }
 
     @Override
@@ -42,7 +45,9 @@ public class Homescreen extends AppCompatActivity implements View.OnClickListene
             case R.id.browse:
                 startActivity(new Intent(this, Browse.class));
                 break;
+            case R.id.friends:
+                startActivity(new Intent(this, Friends.class));
+                break;
         }
     }
-
 }
