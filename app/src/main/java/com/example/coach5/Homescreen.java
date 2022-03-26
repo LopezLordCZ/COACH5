@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class Homescreen extends AppCompatActivity implements View.OnClickListener {
 
     private TextView logout;
+    private Button browse;
     private Button profile;
 
 
@@ -23,6 +24,8 @@ public class Homescreen extends AppCompatActivity implements View.OnClickListene
 
         logout = (TextView) findViewById(R.id.logout);
         logout.setOnClickListener(this);
+        browse = (Button) findViewById(R.id.browse);
+        browse.setOnClickListener(this);
         profile = (Button) findViewById(R.id.profile);
         profile.setOnClickListener(this);
     }
@@ -35,6 +38,9 @@ public class Homescreen extends AppCompatActivity implements View.OnClickListene
                 break;
             case R.id.profile:
                 startActivity(new Intent(this, Profilescreen.class));
+                break;
+            case R.id.browse:
+                startActivity(new Intent(this, Browse.class));
                 break;
         }
     }
