@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/20193219/AndroidStudioProjects/COACH5/app/src/main/res/layout/activity_browse.xml" value="0.2" />
+        <entry key="..\:/Users/20193219/AndroidStudioProjects/COACH5/app/src/main/res/layout/activity_main.xml" value="0.12360688956433637" />
+        <entry key="..\:/Users/20193219/AndroidStudioProjects/COACH5/app/src/main/res/layout/activity_user_register.xml" value="0.12360688956433637" />
+        <entry key="..\:/Users/20193219/AndroidStudioProjects/COACH5/app/src/main/res/layout/fragment_first.xml" value="0.176" />
+        <entry key="..\:/Users/20193219/AndroidStudioProjects/COACH5/app/src/main/res/layout/homepage.xml" value="0.2" />
+        <entry key="..\:/Users/20193219/AndroidStudioProjects/COACH5/app/src/main/res/layout/itemcoach.xml" value="0.264" />
+        <entry key="..\:/Users/20193219/AndroidStudioProjects/COACH5/app/src/main/res/layout/profilepage.xml" value="0.12360688956433637" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+</project>
