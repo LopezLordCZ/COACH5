@@ -7,6 +7,23 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
+    <string-array name="Sports">
+        <item>None</item>
+        <item>Tennis</item>
+        <item>Gym</item>
+        <item>Golf</item>
+        <item>Hockey</item>
+        <item>Soccer</item>
+        <item>Swimming</item>
+    </string-array>
+
+    <string-array name="Skill_levels">
+        <item>Beginner</item>
+        <item>Intermediate</item>
+        <item>Advanced</item>
+        <item>Professional</item>
+    </string-array>
+
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="find_your_coach_right_now">Find your coach right now!</string>

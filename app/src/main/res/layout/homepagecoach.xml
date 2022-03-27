@@ -52,12 +52,12 @@
         />
 
     <Button
-        android:id="@+id/coaches"
+        android:id="@+id/Matches"
         android:layout_width="360dp"
         android:layout_height="70dp"
         android:layout_marginTop="420dp"
         android:backgroundTint="#9C27B0"
-        android:text="Coaches"
+        android:text="Matches"
         android:textSize="26sp"
         android:textStyle="bold"
         android:textColor="#FFFFFF"
@@ -75,7 +75,7 @@
         android:textSize="26sp"
         android:textStyle="bold"
         android:textColor="#FFFFFF"
-        app:layout_anchor="@+id/coaches"
+        app:layout_anchor="@+id/Matches"
         app:layout_anchorGravity="bottom|center"
         />
 
