@@ -78,12 +78,12 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
         String repeatPassword = editTextRepeatPassword.getText().toString().trim();
-        String football = "Null";
-        String basketball = "Null";
-        String tennis = "Null";
-        String footballSkill = "Null";
-        String basketballSkill = "Null";
-        String tennisSkill = "Null";
+        String sport1 = "Null";
+        String sport2 = "Null";
+        String sport3 = "Null";
+        String sport1Skill = "Null";
+        String sport2Skill = "Null";
+        String sport3Skill = "Null";
         String location = "Null";
         String price = "Null";
         final String[] accountType = {null};
@@ -155,7 +155,7 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (accountType[0].equals("User")) {
                             if (task.isSuccessful()) {
-                                User user = new User(finalAccountType, name, surname, age, email, football, basketball, tennis, footballSkill, basketballSkill, tennisSkill, location);
+                                User user = new User(finalAccountType, name, surname, age, email, sport1, sport2, sport3, sport1Skill, sport2Skill, sport3Skill, location);
 
                                 FirebaseDatabase.getInstance().getReference("Users")
                                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -177,7 +177,7 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
                             }
                         } else if (accountType[0].equals("Coach")) {
                             if (task.isSuccessful()) {
-                                Coach coach = new Coach(finalAccountType, name, surname, age, email, football, basketball, tennis, footballSkill, basketballSkill, tennisSkill, location, price);
+                                Coach coach = new Coach(finalAccountType, name, surname, age, email, sport1, sport2, sport3, sport1Skill, sport2Skill, sport3Skill, location, price);
 
                                 FirebaseDatabase.getInstance().getReference("Coaches")
                                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
