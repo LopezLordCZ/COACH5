@@ -26,7 +26,7 @@ public class Homescreen extends AppCompatActivity implements View.OnClickListene
         logout.setOnClickListener(this);
         profile = (Button) findViewById(R.id.profile);
         profile.setOnClickListener(this);
-        friends = (Button) findViewById(R.id.friends);
+        friends = (Button) findViewById(R.id.coaches);
         friends.setOnClickListener(this);
     }
 
@@ -39,7 +39,7 @@ public class Homescreen extends AppCompatActivity implements View.OnClickListene
             case R.id.profile:
                 startActivity(new Intent(this, Profilescreen.class));
                 break;
-            case R.id.friends:
+            case R.id.coaches:
                 startActivity(new Intent(this, Friends.class));
                 break;
         }
