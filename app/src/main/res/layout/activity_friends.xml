@@ -36,6 +36,19 @@
             app:layout_anchorGravity="start"
             app:srcCompat="?attr/homeAsUpIndicator" />
 
+        <Button
+            android:id="@+id/profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="490dp"
+            android:backgroundTint="#9C27B0"
+            android:text="chat"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            app:layout_anchor="@+id/chat"
+            app:layout_anchorGravity="bottom|center"
+            />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
