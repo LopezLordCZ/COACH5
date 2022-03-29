@@ -16,10 +16,16 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_friends);
+        setContentView(R.layout.activity_chat);
 
-        chat = (Button) findViewById(R.id.profile);
-        chat.setOnClickListener(this);
+        //chat = (Button) findViewById(R.id.profile);
+        //chat.setOnClickListener(this);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            String friendName = (String) extras.getString("friend_name");
+            // This ^ variable holds the name of the selected user
+        }
     }
 
     @Override
