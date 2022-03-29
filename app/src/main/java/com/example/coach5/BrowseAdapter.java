@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,34 +13,33 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHolder> {
 
-    Context context;
+    ArrayList<Coach> list;
 
-    ArrayList<User> list;
-
-
-    public BrowseAdapter(Context context, ArrayList<User> list) {
-        this.context = context;
+    public BrowseAdapter(ArrayList<Coach> list) {
         this.list = list;
     }
+
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.itemcoach,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemcoach,parent,false);
         return new MyViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        User user = list.get(position);
-        holder.sport.setText(user.getSurname());
-        holder.name.setText(user.getName());
-        holder.age.setText(user.getAge());
-        holder.rate.setText(user.getEmail());
+        Coach coach = list.get(position);
+        holder.sport.setText(coach.getSport());
+        holder.name.setText(coach.getName());
+        holder.age.setText(coach.getAge());
+        holder.rate.setText(coach.getRate());
 
     }
 
@@ -61,5 +62,4 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
 
         }
     }
-
 }
