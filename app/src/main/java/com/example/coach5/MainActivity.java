@@ -22,7 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView register;
+    private TextView register, forgotPassword;
     private EditText editTextEmail, editTextPassword;
     private Button login;
 
@@ -36,6 +36,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         register = (TextView) findViewById(R.id.register);
         register.setOnClickListener(this);
+
+        forgotPassword = (TextView) findViewById(R.id.forgotpassword);
+        forgotPassword.setOnClickListener(this);
 
         login = (Button) findViewById(R.id.login);
         login.setOnClickListener(this);
@@ -56,6 +59,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.login:
                 userLogin();
+                break;
+            case R.id.forgotpassword:
+                startActivity(new Intent(this, ForgotPassword.class));
                 break;
         }
     }
