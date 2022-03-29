@@ -50,7 +50,7 @@
             android:textSize="26sp"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
-            app:layout_anchor="@+id/chat"
+            app:layout_anchor="@+id/backbutton"
             app:layout_anchorGravity="bottom|center"
             />
 

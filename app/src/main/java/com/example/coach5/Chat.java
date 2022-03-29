@@ -18,14 +18,14 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends);
 
-        chat = (Button) findViewById(R.id.chat);
+        chat = (Button) findViewById(R.id.profile);
         chat.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
-            case R.id.chat:
+            case R.id.profile:
                 startActivity(new Intent(this, Friends.class));
                 break;
         }
