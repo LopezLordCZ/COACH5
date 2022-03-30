@@ -56,15 +56,20 @@
 -->
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <LinearLayout
-        android:id="@+id/friends_list"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent" >
 
-        <!-- Here new friend_layout_item's will get inflated -->
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/friends_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- Here new friend_layout_item's will get inflated -->
+        </LinearLayout>
+
+    </ScrollView>
 
     <include layout="@layout/friends_layout_item" />
-
 </LinearLayout>
