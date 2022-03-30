@@ -22,6 +22,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserRegister extends AppCompatActivity implements View.OnClickListener {
 
     private TextView title, register;
@@ -86,6 +89,7 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
         String sport3Skill = "Null";
         String location = "Null";
         String price = "Null";
+        List<String> contacts = new ArrayList<>();
         final String[] accountType = {null};
 
         if (name.isEmpty()) {
@@ -155,7 +159,7 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (accountType[0].equals("User")) {
                             if (task.isSuccessful()) {
-                                User user = new User(finalAccountType, name, surname, age, email, sport1, sport2, sport3, sport1Skill, sport2Skill, sport3Skill, location);
+                                User user = new User(finalAccountType, name, surname, age, email, sport1, sport2, sport3, sport1Skill, sport2Skill, sport3Skill, location, contacts);
 
                                 FirebaseDatabase.getInstance().getReference("Users")
                                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())

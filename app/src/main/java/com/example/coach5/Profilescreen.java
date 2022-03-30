@@ -31,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.w3c.dom.Text;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Profilescreen extends AppCompatActivity implements View.OnClickListener {
@@ -41,6 +42,7 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
     private String fSurname;
     private String fEmail;
     private String fLocation;
+    private List<String> fContacts;
     //get current user
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -97,6 +99,7 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
                             fSurname = info.surname;
                             fEmail = info.email;
                             fLocation = info.location;
+                            fContacts = info.contacts;
 
                             //set the front end name+age
                             current_name.setText(info.name);
@@ -178,14 +181,14 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
                 String upSkill1 = skill_level1.getSelectedItem().toString();
                 String upSkill2 = skill_level2.getSelectedItem().toString();
                 String upSkill3 = skill_level3.getSelectedItem().toString();
-                updateData(fAccount, upName, fSurname, upAge, fEmail, upSport1, upSport2, upSport3, upSkill1, upSkill2, upSkill3, fLocation);
+                updateData(fAccount, upName, fSurname, upAge, fEmail, upSport1, upSport2, upSport3, upSkill1, upSkill2, upSkill3, fLocation, fContacts);
                 break;
         }
     }
 
-    public void updateData(String account, String name, String surname, String age, String email, String sport1, String sport2, String sport3, String skill1, String skill2, String Skill3, String location){
+    public void updateData(String account, String name, String surname, String age, String email, String sport1, String sport2, String sport3, String skill1, String skill2, String Skill3, String location, List<String> contacts){
         String key = user.getUid();
-        User update = new User(account, name, surname, age, email, sport1, sport2,sport3, skill1, skill2, Skill3, location);
+        User update = new User(account, name, surname, age, email, sport1, sport2,sport3, skill1, skill2, Skill3, location, contacts);
         Map<String, Object> userValues = update.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();

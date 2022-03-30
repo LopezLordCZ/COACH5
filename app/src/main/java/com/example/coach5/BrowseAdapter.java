@@ -2,12 +2,11 @@ package com.example.coach5;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,14 +16,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHolder> implements View.OnClickListener {
+public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHolder> {
 
     ArrayList<Coach> list;
+
+    //get current user
+    private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    private DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
 
     public BrowseAdapter(ArrayList<Coach> list) {
         this.list = list;
@@ -36,10 +45,6 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemcoach,parent,false);
 
-        Button contactButton;
-        contactButton = v.findViewById(R.id.contactButton);
-        contactButton.setOnClickListener(this);
-
         return new MyViewHolder(v);
     }
 
@@ -47,6 +52,10 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         Coach coach = list.get(position); //get coach
+        holder.coach = coach;
+        holder.currentUser = currentUser;
+        holder.ref = reference;
+
         holder.sport1.setText(coach.getSport1());
         holder.skill1.setText(coach.getSkill1());
         holder.name.setText(coach.getName());
@@ -81,10 +90,14 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
         return list.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView sport1, sport2, sport3, skill1, skill2, skill3, name, age, rate;
         LinearLayout rowRate, rowSport2, rowSkill2, rowSport3, rowSkill3;
+        Button contactButton;
+        Coach coach;
+        FirebaseUser currentUser;
+        DatabaseReference ref;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -105,14 +118,46 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
             rowSkill3 = itemView.findViewById(R.id.rowSkill3);
             rowRate = itemView.findViewById(R.id.rowRate);
 
+            contactButton = itemView.findViewById(R.id.contactButton);
+            contactButton.setOnClickListener( new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (v.getId() == R.id.contactButton) {
+                        System.out.println(coach.email);
+                        System.out.println(currentUser.getEmail());
+                        String currentUserEmail = currentUser.getEmail();
 
+                        //get database reference
+                        ref.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    User user = snapshot.getValue(User.class);
+                                    String userEmail = user.email;
+                                    if (userEmail.equals(currentUserEmail)) { //make sure reference is same as current user
+                                        if (snapshot.hasChild("contacts")) {
+                                            System.out.println("contacts found");
+                                            //snapshot.child("contacts").getRef().setValue();
+                                        } else {
+                                            System.out.println("contacts not found");
+                                            snapshot.child("contacts").getRef().setValue(new ArrayList<String>());
+                                        }
+                                        //save user specific info
+                                    }
+
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                System.out.println("BrowseAdapter eventlistener canceled");
+                            }
+                        });
+                    }
+                }
+            });
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.contactButton) {
-            System.out.println("Add contact to database");
-        }
-    }
 }

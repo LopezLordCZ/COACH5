@@ -49,12 +49,12 @@ public class HomescreenCoach extends AppCompatActivity implements View.OnClickLi
             reference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
                         Coach info = snapshot.getValue(Coach.class);
                         String coachEmail = info.email;
                         Log.d("firebase", coachEmail);
                         //make sure reference is same as current coach
-                        if (info.email.equals(email)){
+                        if (info.email.equals(email)) {
                             //save user specific info
                             fSport1 = info.sport1;
                             fSport2 = info.sport2;
