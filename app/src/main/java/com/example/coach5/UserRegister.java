@@ -130,6 +130,12 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
+        if (password.length() > 16) {
+            editTextPassword.setError("Password must contain at most 16 characters");
+            editTextPassword.requestFocus();
+            return;
+        }
+
         if (repeatPassword.isEmpty()) {
             editTextRepeatPassword.setError("Repeat the password!");
             editTextRepeatPassword.requestFocus();
