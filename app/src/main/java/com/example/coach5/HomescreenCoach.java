@@ -74,18 +74,14 @@ public class HomescreenCoach extends AppCompatActivity implements View.OnClickLi
         }
 
         if ((fSport1.equals("Null") && fSkill1.equals("Null")) || (fSport2.equals("Null") && fSkill2.equals("Null")) || (fSport3.equals("Null") && fSkill3.equals("Null"))){
-            profile = (Button) findViewById(R.id.profile);
-            profile.setOnClickListener(this);
             Toast.makeText(HomescreenCoach.this, "Complete your account first!", Toast.LENGTH_LONG).show();
-        } else {
-            logout = (TextView) findViewById(R.id.logout);
-            logout.setOnClickListener(this);
-            profile = (Button) findViewById(R.id.profile);
-            profile.setOnClickListener(this);
-            matches = (Button) findViewById(R.id.Matches);
-            matches.setOnClickListener(this);
         }
-
+        logout = (TextView) findViewById(R.id.logout);
+        logout.setOnClickListener(this);
+        profile = (Button) findViewById(R.id.profile);
+        profile.setOnClickListener(this);
+        matches = (Button) findViewById(R.id.Matches);
+        matches.setOnClickListener(this);
     }
 
     @Override
@@ -100,7 +96,11 @@ public class HomescreenCoach extends AppCompatActivity implements View.OnClickLi
                 startActivity(new Intent(this, ProfilescreenCoach.class));
                 break;
             case R.id.Matches:
-                startActivity(new Intent(this, Friends.class));
+                if ((fSport1.equals("Null") && fSkill1.equals("Null")) || (fSport2.equals("Null") && fSkill2.equals("Null")) || (fSport3.equals("Null") && fSkill3.equals("Null"))){
+                    Toast.makeText(HomescreenCoach.this, "Complete your account first!", Toast.LENGTH_LONG).show();
+                } else {
+                    startActivity(new Intent(this, Friends.class));
+                }
                 break;
         }
     }
