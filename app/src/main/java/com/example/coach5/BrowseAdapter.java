@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHolder> {
 
@@ -119,42 +120,41 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
             rowRate = itemView.findViewById(R.id.rowRate);
 
             contactButton = itemView.findViewById(R.id.contactButton);
-            contactButton.setOnClickListener( new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (v.getId() == R.id.contactButton) {
-                        System.out.println(coach.email);
-                        System.out.println(currentUser.getEmail());
-                        String currentUserEmail = currentUser.getEmail();
+            contactButton.setOnClickListener(v -> {
+                if (v.getId() == R.id.contactButton) {
+                    String Uid = currentUser.getUid();
+                    DatabaseReference userNameRef = ref.child(Uid);
 
-                        //get database reference
-                        ref.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                    User user = snapshot.getValue(User.class);
-                                    String userEmail = user.email;
-                                    if (userEmail.equals(currentUserEmail)) { //make sure reference is same as current user
-                                        if (snapshot.hasChild("contacts")) {
-                                            System.out.println("contacts found");
-                                            //snapshot.child("contacts").getRef().setValue();
-                                        } else {
-                                            System.out.println("contacts not found");
-                                            snapshot.child("contacts").getRef().setValue(new ArrayList<String>());
-                                        }
-                                        //save user specific info
+                    userNameRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            if (snapshot.hasChild("contacts")) {
+                                Boolean contactExists = false;
+                                for (DataSnapshot contact: snapshot.child("contacts").getChildren()){
+                                    String contactEmail = (String) contact.getValue();
+                                    if (contactEmail.equals(coach.email)) {
+                                        Toast toast = Toast.makeText(v.getContext(), "Coach already in contacts", Toast.LENGTH_LONG);
+                                        toast.show();
+                                        contactExists = true;
                                     }
-
+                                }
+                                if (!contactExists) {
+                                    ref.child(Uid).child("contacts").push().setValue(coach.email);
+                                    Toast toast = Toast.makeText(v.getContext(), "Coach added to contacts", Toast.LENGTH_LONG);
+                                    toast.show();
                                 }
 
+                            } else {
+                                ref.child(Uid).child("contacts").push().setValue(coach.email);
+                                Toast toast = Toast.makeText(v.getContext(), "Coach added to contacts!", Toast.LENGTH_LONG);
+                                toast.show();
                             }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                                System.out.println("BrowseAdapter eventlistener canceled");
-                            }
-                        });
-                    }
                 }
             });
         }
