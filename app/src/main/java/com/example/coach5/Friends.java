@@ -34,6 +34,14 @@ public class Friends extends AppCompatActivity implements View.OnClickListener  
 
         addChatEntry("friend 1");
         addChatEntry("friend 2");
+        addChatEntry("friend 3");
+        addChatEntry("friend 4");
+        addChatEntry("friend 5");
+        addChatEntry("friend 6");
+        addChatEntry("friend 7");
+        addChatEntry("friend 8");
+        addChatEntry("friend 9");
+        addChatEntry("friend 10");
     }
 
     private void addChatEntry(String username) {
