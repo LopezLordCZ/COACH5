@@ -10,11 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,14 +25,23 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView register, forgotPassword;
     private EditText editTextEmail, editTextPassword;
+    private RadioButton user, coach;
     private Button login;
 
     private FirebaseAuth mAuth;
+
+    private DatabaseReference reference;
+
     private ProgressBar progressBar;
 
 
@@ -52,6 +63,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editTextPassword = (EditText) findViewById(R.id.password);
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+        user = (RadioButton) findViewById(R.id.User);
+        coach = (RadioButton) findViewById(R.id.Coach);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -124,23 +138,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         progressBar.setVisibility(View.VISIBLE);
 
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user.isChecked()) {
+            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                    if(user.isEmailVerified()) {
-                        //Redirect to the user main page
-                        startActivity(new Intent(MainActivity.this, Homescreen.class));
+                        if(user.isEmailVerified()) {
+                            //Redirect to the user main page
+                            startActivity(new Intent(MainActivity.this, Homescreen.class));
+                        } else {
+                            user.sendEmailVerification();
+                            Toast.makeText(MainActivity.this,"Check your email to verify your account!", Toast.LENGTH_LONG).show();
+                            progressBar.setVisibility(View.GONE);
+                        }
                     } else {
-                        user.sendEmailVerification();
-                        Toast.makeText(MainActivity.this,"Check your email to verify your account!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "Failed to login, try again", Toast.LENGTH_LONG).show();
                     }
-                } else {
-                    Toast.makeText(MainActivity.this, "Failed to login, try again", Toast.LENGTH_LONG).show();
                 }
-            }
-        });
+            });
+        } else if (coach.isChecked()) {
+            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                        if(user.isEmailVerified()) {
+                            //Redirect to the user main page
+                            startActivity(new Intent(MainActivity.this, HomescreenCoach.class));
+                        } else {
+                            user.sendEmailVerification();
+                            Toast.makeText(MainActivity.this,"Check your email to verify your account!", Toast.LENGTH_LONG).show();
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    } else {
+                        Toast.makeText(MainActivity.this, "Failed to login, try again", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
+
     }
 }

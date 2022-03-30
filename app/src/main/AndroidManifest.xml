@@ -23,10 +23,19 @@
             android:name=".Chat"
             android:exported="false" />
         <activity
+            android:name=".Browse"
+            android:exported="false" />
+        <activity
             android:name=".Friends"
             android:exported="false" />
         <activity
             android:name=".Homescreen"
+            android:exported="false" />
+        <activity
+            android:name=".HomescreenCoach"
+            android:exported="false" />
+        <activity
+            android:name=".ProfilescreenCoach"
             android:exported="false" />
         <activity
             android:name=".Profilescreen"
