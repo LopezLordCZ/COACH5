@@ -121,6 +121,38 @@
         tools:ignore="MissingConstraints"
         />
 
+    <RadioGroup
+        android:id="@+id/accountType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@+id/motto"
+        app:layout_anchorGravity="bottom|center"
+        android:layout_marginTop="150dp"
+        android:orientation="horizontal"
+        android:checkedButton="@+id/User">
+
+        <RadioButton
+            android:id="@+id/User"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="User"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:buttonTint="#9C27B0"
+            />
+
+        <RadioButton
+            android:id="@+id/Coach"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Coach"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:buttonTint="#9C27B0"
+            />
+
+    </RadioGroup>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 

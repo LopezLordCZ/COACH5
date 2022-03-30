@@ -91,7 +91,9 @@ public class HomescreenCoach extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.logout:
+                FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(this, MainActivity.class));
+                Toast.makeText(HomescreenCoach.this,"You have been logged out!", Toast.LENGTH_LONG).show();
                 break;
             case R.id.profile:
                 startActivity(new Intent(this, ProfilescreenCoach.class));
