@@ -99,7 +99,11 @@ public class HomescreenCoach extends AppCompatActivity implements View.OnClickLi
                 if ((fSport1.equals("Null") && fSkill1.equals("Null")) || (fSport2.equals("Null") && fSkill2.equals("Null")) || (fSport3.equals("Null") && fSkill3.equals("Null"))){
                     Toast.makeText(HomescreenCoach.this, "Complete your account first!", Toast.LENGTH_LONG).show();
                 } else {
-                    startActivity(new Intent(this, Friends.class));
+                    // Tell the matches page that the user is a coach
+                    Intent matchesIntent = new Intent(HomescreenCoach.this, Friends.class);
+                    matchesIntent.putExtra("user_type", "coach");
+
+                    startActivity(matchesIntent);
                 }
                 break;
         }
