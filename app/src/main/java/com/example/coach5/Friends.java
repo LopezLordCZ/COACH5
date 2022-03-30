@@ -32,10 +32,8 @@ public class Friends extends AppCompatActivity implements View.OnClickListener  
         // Initialise the inflater to create new views
         inflater = getLayoutInflater();
 
-        addChatEntry("cat again");
-        addChatEntry("cat again 2");
-
-        findViewById(R.id.title).setOnClickListener(this);
+        addChatEntry("friend 1");
+        addChatEntry("friend 2");
     }
 
     private void addChatEntry(String username) {
