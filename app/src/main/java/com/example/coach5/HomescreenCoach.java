@@ -26,12 +26,12 @@ public class HomescreenCoach extends AppCompatActivity implements View.OnClickLi
     private TextView logout;
     private Button profile;
     private Button matches;
-    private String fSport1;
-    private String fSport2;
-    private String fSport3;
-    private String fSkill1;
-    private String fSkill2;
-    private String fSkill3;
+    private String fSport1 = "Null";
+    private String fSport2 = "Null";
+    private String fSport3 = "Null";
+    private String fSkill1 = "Null";
+    private String fSkill2 = "Null";
+    private String fSkill3 = "Null";
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
 
@@ -73,18 +73,15 @@ public class HomescreenCoach extends AppCompatActivity implements View.OnClickLi
             });
         }
 
-        if ((!fSport1.equals("Null") && !fSkill1.equals("Null")) || (!fSport2.equals("Null") && !fSkill2.equals("Null")) || (!fSport3.equals("Null") && !fSkill3.equals("Null"))){
-            profile = (Button) findViewById(R.id.profile);
-            profile.setOnClickListener(this);
+        if ((fSport1.equals("Null") && fSkill1.equals("Null")) || (fSport2.equals("Null") && fSkill2.equals("Null")) || (fSport3.equals("Null") && fSkill3.equals("Null"))){
             Toast.makeText(HomescreenCoach.this, "Complete your account first!", Toast.LENGTH_LONG).show();
-        } else {
-            logout = (TextView) findViewById(R.id.logout);
-            logout.setOnClickListener(this);
-            profile = (Button) findViewById(R.id.profile);
-            profile.setOnClickListener(this);
-            matches = (Button) findViewById(R.id.Matches);
-            matches.setOnClickListener(this);
         }
+        logout = (TextView) findViewById(R.id.logout);
+        logout.setOnClickListener(this);
+        profile = (Button) findViewById(R.id.profile);
+        profile.setOnClickListener(this);
+        matches = (Button) findViewById(R.id.Matches);
+        matches.setOnClickListener(this);
     }
 
     @Override
@@ -99,7 +96,15 @@ public class HomescreenCoach extends AppCompatActivity implements View.OnClickLi
                 startActivity(new Intent(this, ProfilescreenCoach.class));
                 break;
             case R.id.Matches:
-                startActivity(new Intent(this, Friends.class));
+                if ((fSport1.equals("Null") && fSkill1.equals("Null")) || (fSport2.equals("Null") && fSkill2.equals("Null")) || (fSport3.equals("Null") && fSkill3.equals("Null"))){
+                    Toast.makeText(HomescreenCoach.this, "Complete your account first!", Toast.LENGTH_LONG).show();
+                } else {
+                    // Tell the matches page that the user is a coach
+                    Intent matchesIntent = new Intent(HomescreenCoach.this, Friends.class);
+                    matchesIntent.putExtra("user_type", "coach");
+
+                    startActivity(matchesIntent);
+                }
                 break;
         }
     }

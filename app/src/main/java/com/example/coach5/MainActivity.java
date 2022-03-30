@@ -1,9 +1,13 @@
 package com.example.coach5;
 
 import android.content.Intent;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
@@ -40,8 +44,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private ProgressBar progressBar;
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -63,7 +68,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         coach = (RadioButton) findViewById(R.id.Coach);
 
         mAuth = FirebaseAuth.getInstance();
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            } else {
+                //request Location Permission
+                startService();
+            }
+        } else {
+            //Start the Location Service
+            startService();
+        }
     }
+
+        void startService () {
+            Intent intent = new Intent(MainActivity.this, LocationService.class);
+            startService(intent);
+        }
+
+
+
+
+
+
 
     @Override
     public void onClick(View v) {
