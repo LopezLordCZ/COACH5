@@ -25,7 +25,7 @@
         android:id="@+id/motto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Find your coach right now!"
+        android:text="Find new clients right now!"
         android:textAlignment="center"
         android:textColor="@color/purple_500"
         android:textSize="20sp"
@@ -37,19 +37,6 @@
         app:layout_constraintTop_toBottomOf="@+id/title"
         />
 
-    <Button
-        android:id="@+id/browse"
-        android:layout_width="360dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="350dp"
-        android:backgroundTint="#9C27B0"
-        android:text="browse"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        app:layout_anchor="@+id/picture"
-        app:layout_anchorGravity="bottom|center"
-        />
 
     <Button
         android:id="@+id/Matches"
@@ -61,7 +48,7 @@
         android:textSize="26sp"
         android:textStyle="bold"
         android:textColor="#FFFFFF"
-        app:layout_anchor="@+id/browse"
+        app:layout_anchor="@+id/picture"
         app:layout_anchorGravity="bottom|center"
         />
 
