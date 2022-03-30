@@ -48,12 +48,6 @@ public class Browse extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //list = new ArrayList<>();
-        //browseAdapter = new BrowseAdapter(list);
-        //recyclerView.setAdapter(browseAdapter);
-
-        //getdata();
-
     }
 
     @Override
@@ -103,7 +97,7 @@ public class Browse extends AppCompatActivity {
     private void search(String newText) {
         ArrayList<Coach> filterList = new ArrayList<>();
         for (Coach coach : list) {
-            if (coach.getName().toLowerCase().contains(newText)) { //filter condition
+            if (coach.searchCondition(newText)) { //filter condition
                 filterList.add(coach);
             }
         }

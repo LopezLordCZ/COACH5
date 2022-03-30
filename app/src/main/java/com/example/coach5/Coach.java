@@ -24,17 +24,34 @@ public class Coach {
         this.price = price;
     }
 
-    public String getSport() {
-        return sport1;
-    }
-    public String getName() {
-        return name;
-    }
-    public String getAge() {
-        return age;
-    }
-    public String getRate() {
-        return price;
+    public String getSport1() { return sport1; }
+    public String getSport2() { return sport2; }
+    public String getSport3() { return sport3; }
+    public String getSkill1() { return sport1Skill; }
+    public String getSkill2() { return sport2Skill; }
+    public String getSkill3() { return sport3Skill; }
+    public String getName() { return name; }
+    public String getAge() { return age; }
+    public String getRate() { return price; }
+
+    public Boolean searchCondition(String str) {
+        Boolean result = false;
+        if (this.getName().toLowerCase().contains(str)) {
+            result = true;
+        }
+        if (this.getSport1().toLowerCase().contains(str)) {
+            result = true;
+        }
+        if (this.getSport2().toLowerCase().contains(str)) {
+            result = true;
+        }
+        if (this.getSport3().toLowerCase().contains(str)) {
+            result = true;
+        }
+        if (this.getRate().toLowerCase().contains(str)) {
+            result = true;
+        }
+        return result;
     }
 
 
