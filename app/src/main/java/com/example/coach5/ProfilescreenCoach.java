@@ -37,6 +37,15 @@ public class ProfilescreenCoach extends AppCompatActivity implements View.OnClic
     private String fEmail;
     private String fLocation;
     private String updateLocation;
+    private String fupName;
+    private String fupAge;
+    private String fupSport1;
+    private String fupSport2;
+    private String fupSport3;
+    private String fupSkill1;
+    private String fupSkill2;
+    private String fupSkill3;
+    private String fupPrice;
 
     //get current coach
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -95,6 +104,15 @@ public class ProfilescreenCoach extends AppCompatActivity implements View.OnClic
                             fSurname = info.surname;
                             fEmail = info.email;
                             fLocation = info.location;
+                            fupName = info.name;
+                            fupAge = info.age;
+                            fupSport1 = info.sport1;
+                            fupSport2 = info.sport2;
+                            fupSport3 = info.sport3;
+                            fupSkill1 = info.sport1Skill;
+                            fupSkill2 = info.sport2Skill;
+                            fupSkill3 = info.sport3Skill;
+                            fupPrice = info.price;
 
                             //set the front end name+age
                             current_name.setText(info.name);
@@ -170,16 +188,7 @@ public class ProfilescreenCoach extends AppCompatActivity implements View.OnClic
 
             case R.id.location:
                 //button for saving the location
-                String up2Name = current_name.getText().toString();
-                String up2Age = current_age.getText().toString();
-                String up2Sport1 = sport1.getSelectedItem().toString();
-                String up2Sport2 = sport2.getSelectedItem().toString();
-                String up2Sport3 = sport3.getSelectedItem().toString();
-                String up2Skill1 = skill_level1.getSelectedItem().toString();
-                String up2Skill2 = skill_level2.getSelectedItem().toString();
-                String up2Skill3 = skill_level3.getSelectedItem().toString();
-                String up2Price = current_price.getText().toString();
-                updateData(fAccount, up2Name, fSurname, up2Age, fEmail, up2Sport1, up2Sport2, up2Sport3, up2Skill1, up2Skill2, up2Skill3, updateLocation, up2Price);
+                updateData(fAccount, fupName, fSurname, fupAge, fEmail, fupSport1, fupSport2, fupSport3, fupSkill1, fupSkill2, fupSkill3, updateLocation, fupPrice);
                 break;
 
             case R.id.profile:
