@@ -3,23 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/20193219/AndroidStudioProjects/COACH5/app/src/main/res/layout/activity_browse.xml" value="0.2" />
-        <entry key="..\:/Users/20193219/AndroidStudioProjects/COACH5/app/src/main/res/layout/activity_main.xml" value="0.12360688956433637" />
-        <entry key="..\:/Users/20193219/AndroidStudioProjects/COACH5/app/src/main/res/layout/activity_user_register.xml" value="0.12360688956433637" />
-        <entry key="..\:/Users/20193219/AndroidStudioProjects/COACH5/app/src/main/res/layout/fragment_first.xml" value="0.176" />
-        <entry key="..\:/Users/20193219/AndroidStudioProjects/COACH5/app/src/main/res/layout/homepage.xml" value="0.2" />
-        <entry key="..\:/Users/20193219/AndroidStudioProjects/COACH5/app/src/main/res/layout/itemcoach.xml" value="0.264" />
-        <entry key="..\:/Users/20193219/AndroidStudioProjects/COACH5/app/src/main/res/layout/profilepage.xml" value="0.12360688956433637" />
-        <entry key="..\:/Users/20193219/AndroidStudioProjects/COACH5/app/src/main/res/menu/menu_main.xml" value="0.176" />
-        <entry key="..\:/Users/20193219/AndroidStudioProjects/COACH5/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1555" />
-        <entry key="..\:/Users/20193219/AndroidStudioProjects/COACH5/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1555" />
-        <entry key="..\:/Users/20193219/AndroidStudioProjects/COACH5/app/src/main/res/layout/activity_chat.xml" value="0.264" />
-        <entry key="..\:/Users/20193219/AndroidStudioProjects/COACH5/app/src/main/res/layout/activity_friends.xml" value="0.152" />
-        <entry key="..\:/Users/20193219/AndroidStudioProjects/COACH5/app/src/main/res/layout/content_main.xml" value="0.12360688956433637" />
-        <entry key="..\:/Users/20193219/AndroidStudioProjects/COACH5/app/src/main/res/layout/friends.xml" value="0.15579710144927536" />
-        <entry key="..\:/Users/20193219/AndroidStudioProjects/COACH5/app/src/main/res/layout/profilepage.xml" value="0.12360688956433637" />
+        <entry key="..\:/Users/20201981/AndroidStudioProjects/COACH5/app/src/main/res/layout/activity_chat.xml" value="0.12360688956433637" />
+        <entry key="..\:/Users/20201981/AndroidStudioProjects/COACH5/app/src/main/res/layout/activity_user_register.xml" value="0.264" />
+        <entry key="..\:/Users/20201981/AndroidStudioProjects/COACH5/app/src/main/res/layout/content_main.xml" value="0.12360688956433637" />
+        <entry key="..\:/Users/20201981/AndroidStudioProjects/COACH5/app/src/main/res/layout/fragment_first.xml" value="0.15579710144927536" />
+        <entry key="..\:/Users/20201981/AndroidStudioProjects/COACH5/app/src/main/res/layout/homepage.xml" value="0.2" />
+        <entry key="..\:/Users/20201981/AndroidStudioProjects/COACH5/app/src/main/res/layout/profilepage.xml" value="0.12360688956433637" />
+        <entry key="..\:/Users/20202353/Documents/boeken/y2/q3/DBL app development/COACH5/app/src/main/res/layout/activity_chat.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/20202353/Documents/boeken/y2/q3/DBL app development/COACH5/app/src/main/res/layout/activity_friends.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/20202353/Documents/boeken/y2/q3/DBL app development/COACH5/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/20202353/Documents/boeken/y2/q3/DBL app development/COACH5/app/src/main/res/layout/homepagecoach.xml" value="0.2296195652173913" />
+        <entry key="..\:/Users/20202353/Documents/boeken/y2/q3/DBL app development/COACH5/app/src/main/res/layout/profilepage.xml" value="0.17831813576494426" />
+        <entry key="..\:/Users/20202353/Documents/boeken/y2/q3/DBL app development/COACH5/app/src/main/res/layout/profilepagecoach.xml" value="0.2296195652173913" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>
