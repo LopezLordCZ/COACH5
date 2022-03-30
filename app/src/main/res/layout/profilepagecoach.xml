@@ -177,7 +177,19 @@
                 app:layout_anchor="@+id/age"
                 app:layout_anchorGravity="bottom|right" />
 
-
+            <Button
+                android:id="@+id/location"
+                android:layout_width="360dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="850dp"
+                android:backgroundTint="#9C27B0"
+                android:text="Save this location"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                app:layout_anchor="@+id/age"
+                app:layout_anchorGravity="bottom|center"
+                />
 
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>

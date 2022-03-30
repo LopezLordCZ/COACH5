@@ -30,11 +30,14 @@ import java.util.Map;
 public class ProfilescreenCoach extends AppCompatActivity implements View.OnClickListener {
     private ImageView back;
     private Button save;
+    private Button uLocation;
     private DatabaseReference reference;
     private String fAccount;
     private String fSurname;
     private String fEmail;
     private String fLocation;
+    private String updateLocation;
+
     //get current coach
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -139,6 +142,8 @@ public class ProfilescreenCoach extends AppCompatActivity implements View.OnClic
             });
         }
 
+        uLocation = (Button) findViewById(R.id.location);
+        uLocation.setOnClickListener(this);
         save = (Button) findViewById(R.id.profile);
         save.setOnClickListener(this);
         back = (ImageView) findViewById(R.id.imageView2);
@@ -162,6 +167,21 @@ public class ProfilescreenCoach extends AppCompatActivity implements View.OnClic
                 //back button
                 startActivity(new Intent(this, HomescreenCoach.class));
                 break;
+
+            case R.id.location:
+                //button for saving the location
+                String up2Name = current_name.getText().toString();
+                String up2Age = current_age.getText().toString();
+                String up2Sport1 = sport1.getSelectedItem().toString();
+                String up2Sport2 = sport2.getSelectedItem().toString();
+                String up2Sport3 = sport3.getSelectedItem().toString();
+                String up2Skill1 = skill_level1.getSelectedItem().toString();
+                String up2Skill2 = skill_level2.getSelectedItem().toString();
+                String up2Skill3 = skill_level3.getSelectedItem().toString();
+                String up2Price = current_price.getText().toString();
+                updateData(fAccount, up2Name, fSurname, up2Age, fEmail, up2Sport1, up2Sport2, up2Sport3, up2Skill1, up2Skill2, up2Skill3, updateLocation, up2Price);
+                break;
+
             case R.id.profile:
                 //button for saving
 
