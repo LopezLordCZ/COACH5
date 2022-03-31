@@ -90,7 +90,6 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
                     for (DataSnapshot snapshot: dataSnapshot.getChildren()){
                         User info = snapshot.getValue(User.class);
                         String userEmail = info.email;
-                        Log.d("firebase", userEmail);
                         //make sure reference is same as current user
                         if (info.email.equals(email)){
                             //save user specific info

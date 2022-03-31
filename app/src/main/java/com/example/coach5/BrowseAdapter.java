@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -31,12 +32,14 @@ import java.util.Map;
 public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHolder> {
 
     ArrayList<Coach> list;
+    ArrayList<String> listId;
 
     //get current user
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
 
-    public BrowseAdapter(ArrayList<Coach> list) {
+    public BrowseAdapter(ArrayList<Coach> list, ArrayList<String> listId) {
+        this.listId = listId;
         this.list = list;
     }
 
@@ -53,6 +56,8 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         Coach coach = list.get(position); //get coach
+
+        holder.coachID = listId.get(position);
         holder.coach = coach;
         holder.currentUser = currentUser;
         holder.ref = reference;
@@ -97,6 +102,7 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
         LinearLayout rowRate, rowSport2, rowSkill2, rowSport3, rowSkill3;
         Button contactButton;
         Coach coach;
+        String coachID;
         FirebaseUser currentUser;
         DatabaseReference ref;
 
@@ -123,32 +129,36 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
             contactButton.setOnClickListener(v -> {
                 if (v.getId() == R.id.contactButton) {
                     String Uid = currentUser.getUid();
-                    DatabaseReference userNameRef = ref.child(Uid);
+                    DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child("Matches");
+                    DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference();
 
-                    userNameRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                    ref2.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
-                            if (snapshot.hasChild("contacts")) {
-                                Boolean contactExists = false;
-                                for (DataSnapshot contact: snapshot.child("contacts").getChildren()){
-                                    String contactEmail = (String) contact.getValue();
-                                    if (contactEmail.equals(coach.email)) {
-                                        Toast toast = Toast.makeText(v.getContext(), "Coach already in contacts", Toast.LENGTH_LONG);
+                                boolean matchExists = false;
+                                String coachId = coachID;
+                                String matchId = "";
+                                for (DataSnapshot contact: snapshot.getChildren()){
+                                    matchId = contact.getKey();
+                                    if (matchId.equals(Uid+coachId)) {
+                                        Toast toast = Toast.makeText(v.getContext(), "Contact already added!", Toast.LENGTH_LONG);
                                         toast.show();
-                                        contactExists = true;
+                                        matchExists = true;
                                     }
                                 }
-                                if (!contactExists) {
-                                    ref.child(Uid).child("contacts").push().setValue(coach.email);
-                                    Toast toast = Toast.makeText(v.getContext(), "Coach added to contacts", Toast.LENGTH_LONG);
-                                    toast.show();
-                                }
+                                if (!matchExists){
+                                    Match newMatch = new Match(Uid, coachId, ref.child(Uid).child("name").toString(), coach.name);
+                                    Map<String, Object> testValues = newMatch.toMap();
+                                    Map<String, Object> childupdates1 = new HashMap<>();
+                                    childupdates1.put("Matches/"+Uid+coachId, testValues);
 
-                            } else {
-                                ref.child(Uid).child("contacts").push().setValue(coach.email);
-                                Toast toast = Toast.makeText(v.getContext(), "Coach added to contacts!", Toast.LENGTH_LONG);
-                                toast.show();
-                            }
+                                    reference2.updateChildren(childupdates1);
+
+                                    Toast toast = Toast.makeText(v.getContext(), "New contact has been added!", Toast.LENGTH_LONG);
+                                    toast.show();
+
+                                }
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
