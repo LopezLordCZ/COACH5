@@ -155,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 }
             });
-            return;
 
         } else if (coach.isChecked()) {
             reference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -169,10 +168,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
                 }
             });
-            return;
         }
 
         progressBar.setVisibility(View.VISIBLE);
