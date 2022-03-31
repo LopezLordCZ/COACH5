@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseAuth mAuth;
 
     private DatabaseReference reference;
+    private DatabaseReference referenceCoach;
 
     private ProgressBar progressBar;
 
@@ -68,6 +69,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         coach = (RadioButton) findViewById(R.id.Coach);
 
         mAuth = FirebaseAuth.getInstance();
+
+        reference = FirebaseDatabase.getInstance().getReference("Users");
+        referenceCoach = FirebaseDatabase.getInstance().getReference("Coaches");
 
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -133,6 +137,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (password.length() < 8) {
             editTextPassword.setError("Min. password length is 8 characters!");
             editTextPassword.requestFocus();
+            return;
+        }
+
+        if (user.isChecked()) {
+            referenceCoach.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        editTextEmail.setError("This email is registered as coach account");
+                        editTextEmail.requestFocus();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            return;
+
+        } else if (coach.isChecked()) {
+            reference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        editTextEmail.setError("This email is registered as user account");
+                        editTextEmail.requestFocus();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
             return;
         }
 
