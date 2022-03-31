@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/friends_main_layout"
+    tools:context=".Friends"
+    android:orientation="vertical">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/title_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".UserLogin"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="80dp">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:fontFamily="sans-serif-black"
+            android:text="Friends"
+            android:textAlignment="center"
+            android:textColor="@color/purple_700"
+            android:textSize="60sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/backbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="40dp"
+            app:layout_anchor="@+id/title"
+            app:layout_anchorGravity="start"
+            app:srcCompat="?attr/homeAsUpIndicator" />
+<!--
+        <Button
+            android:id="@+id/profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="490dp"
+            android:backgroundTint="#9C27B0"
+            android:text="chat"
+            android:textColor="#FFFFFF"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            app:layout_anchor="@+id/backbutton"
+            app:layout_anchorGravity="bottom|center" />
+-->
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:id="@+id/friends_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- Here new friend_layout_item's will get inflated -->
+        </LinearLayout>
+
+    </ScrollView>
+
+    <include layout="@layout/friends_layout_item" />
+</LinearLayout>

@@ -19,8 +19,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class UserRegister extends AppCompatActivity implements View.OnClickListener {
 
@@ -29,7 +32,7 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
     private RadioButton user, coach;
     private ProgressBar progressBar;
 
-    private DatabaseReference reference;
+    private DatabaseReference reference, referenceCoach;
     private FirebaseAuth mAuth;
 
     @Override
@@ -39,6 +42,7 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
 
         mAuth = FirebaseAuth.getInstance();
         reference = FirebaseDatabase.getInstance().getReference("Users");
+        referenceCoach = FirebaseDatabase.getInstance().getReference("Coaches");
 
         title = (TextView) findViewById(R.id.title);
         title.setOnClickListener(this);
@@ -78,7 +82,15 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
         String repeatPassword = editTextRepeatPassword.getText().toString().trim();
-        String accountType = null;
+        String sport1 = "Null";
+        String sport2 = "Null";
+        String sport3 = "Null";
+        String sport1Skill = "Null";
+        String sport2Skill = "Null";
+        String sport3Skill = "Null";
+        String location = "Null";
+        String price = "Null";
+        final String[] accountType = {null};
 
         if (name.isEmpty()) {
             editTextName.setError("Name is required!");
@@ -122,52 +134,115 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
+        if (password.length() > 16) {
+            editTextPassword.setError("Password must contain at most 16 characters");
+            editTextPassword.requestFocus();
+            return;
+        }
+
         if (repeatPassword.isEmpty()) {
             editTextRepeatPassword.setError("Repeat the password!");
             editTextRepeatPassword.requestFocus();
             return;
         }
 
-        if(!repeatPassword.equals(password)) {
+        if (!repeatPassword.equals(password)) {
             editTextRepeatPassword.setError("Passwords does not match!");
             editTextRepeatPassword.requestFocus();
         }
 
-        if(user.isChecked()) {
-            accountType = "User";
+        if (user.isChecked()) {
+            accountType[0] = "User";
         } else if (coach.isChecked()) {
-            accountType = "Coach";
+            accountType[0] = "Coach";
         }
 
-        progressBar.setVisibility(View.VISIBLE);
-        String finalAccountType = accountType;
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        reference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    User user = new User(finalAccountType, name, surname, age, email);
-
-                    FirebaseDatabase.getInstance().getReference("Users")
-                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(UserRegister.this, "User has been successfully registered", Toast.LENGTH_LONG).show();
-                                //Back to login
-                            } else {
-                                Toast.makeText(UserRegister.this, "Registration failed, try again!", Toast.LENGTH_LONG).show();
-                            }
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    });
-
-                } else{
-                    Toast.makeText(UserRegister.this, "Registration failed, try again!", Toast.LENGTH_LONG).show();
-                    progressBar.setVisibility(View.GONE);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    editTextEmail.setError("Email already taken");
+                    editTextEmail.requestFocus();
+                    return;
                 }
             }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
         });
+
+        referenceCoach.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    editTextEmail.setError("Email already taken");
+                    editTextEmail.requestFocus();
+                    return;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        progressBar.setVisibility(View.VISIBLE);
+        String finalAccountType = accountType[0];
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (accountType[0].equals("User")) {
+                            if (task.isSuccessful()) {
+                                User user = new User(finalAccountType, name, surname, age, email, sport1, sport2, sport3, sport1Skill, sport2Skill, sport3Skill, location);
+
+                                FirebaseDatabase.getInstance().getReference("Users")
+                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(UserRegister.this, "User has been successfully registered", Toast.LENGTH_LONG).show();
+                                            progressBar.setVisibility(View.GONE);
+                                            //Back to login
+                                        } else {
+                                            Toast.makeText(UserRegister.this, "Registration failed, try again!", Toast.LENGTH_LONG).show();
+                                        }
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(UserRegister.this, "Registration failed, try again!", Toast.LENGTH_LONG).show();
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        } else if (accountType[0].equals("Coach")) {
+                            if (task.isSuccessful()) {
+                                Coach coach = new Coach(finalAccountType, name, surname, age, email, sport1, sport2, sport3, sport1Skill, sport2Skill, sport3Skill, location, price);
+
+                                FirebaseDatabase.getInstance().getReference("Coaches")
+                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .setValue(coach).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(UserRegister.this, "Coach has been successfully registered", Toast.LENGTH_LONG).show();
+                                            progressBar.setVisibility(View.GONE);
+                                            //Back to login
+                                        } else {
+                                            Toast.makeText(UserRegister.this, "Registration failed, try again!", Toast.LENGTH_LONG).show();
+                                        }
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(UserRegister.this, "Registration failed, try again!", Toast.LENGTH_LONG).show();
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        }
+                    }
+                });
     }
 }

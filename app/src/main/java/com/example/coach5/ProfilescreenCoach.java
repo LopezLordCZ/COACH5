@@ -2,13 +2,10 @@ package com.example.coach5;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -16,7 +13,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,30 +24,41 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 import java.util.HashMap;
 import java.util.Map;
 
-public class Profilescreen extends AppCompatActivity implements View.OnClickListener {
+public class ProfilescreenCoach extends AppCompatActivity implements View.OnClickListener {
     private ImageView back;
     private Button save;
+    private Button uLocation;
     private DatabaseReference reference;
     private String fAccount;
     private String fSurname;
     private String fEmail;
     private String fLocation;
-    //get current user
+    private String updateLocation;
+    private String fupName;
+    private String fupAge;
+    private String fupSport1;
+    private String fupSport2;
+    private String fupSport3;
+    private String fupSkill1;
+    private String fupSkill2;
+    private String fupSkill3;
+    private String fupPrice;
+
+    //get current coach
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.profilepage);
+        setContentView(R.layout.profilepagecoach);
 
         //create the fields
         TextView current_name = findViewById(R.id.userName);
         TextView current_age = findViewById(R.id.age);
+        TextView current_price = findViewById(R.id.price);
         Spinner sport1 = findViewById(R.id.Sport1);
         Spinner sport2 = findViewById(R.id.Sport2);
         Spinner sport3 = findViewById(R.id.Sport3);
@@ -78,25 +85,34 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
         skill_level3.setAdapter(adapterSkill_level);
 
         if (user != null) {
-            //email address of current user
+            //email address of current coach
             String email = user.getEmail();
 
             //get database reference
-            reference = FirebaseDatabase.getInstance().getReference().child("Users");
+            reference = FirebaseDatabase.getInstance().getReference().child("Coaches");
             reference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-                        User info = snapshot.getValue(User.class);
-                        String userEmail = info.email;
-                        Log.d("firebase", userEmail);
-                        //make sure reference is same as current user
+                        Coach info = snapshot.getValue(Coach.class);
+                        String coachEmail = info.email;
+                        Log.d("firebase", coachEmail);
+                        //make sure reference is same as current coach
                         if (info.email.equals(email)){
                             //save user specific info
                             fAccount = info.finalAccountType;
                             fSurname = info.surname;
                             fEmail = info.email;
                             fLocation = info.location;
+                            fupName = info.name;
+                            fupAge = info.age;
+                            fupSport1 = info.sport1;
+                            fupSport2 = info.sport2;
+                            fupSport3 = info.sport3;
+                            fupSkill1 = info.sport1Skill;
+                            fupSkill2 = info.sport2Skill;
+                            fupSkill3 = info.sport3Skill;
+                            fupPrice = info.price;
 
                             //set the front end name+age
                             current_name.setText(info.name);
@@ -144,6 +160,8 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
             });
         }
 
+        uLocation = (Button) findViewById(R.id.location);
+        uLocation.setOnClickListener(this);
         save = (Button) findViewById(R.id.profile);
         save.setOnClickListener(this);
         back = (ImageView) findViewById(R.id.imageView2);
@@ -155,6 +173,7 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
         //create the fields
         TextView current_name = findViewById(R.id.userName);
         TextView current_age = findViewById(R.id.age);
+        TextView current_price = findViewById(R.id.price);
         Spinner sport1 = findViewById(R.id.Sport1);
         Spinner sport2 = findViewById(R.id.Sport2);
         Spinner sport3 = findViewById(R.id.Sport3);
@@ -164,8 +183,14 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
         switch(v.getId()) {
             case R.id.imageView2:
                 //back button
-                startActivity(new Intent(this, Homescreen.class));
+                startActivity(new Intent(this, HomescreenCoach.class));
                 break;
+
+            case R.id.location:
+                //button for saving the location
+                updateData(fAccount, fupName, fSurname, fupAge, fEmail, fupSport1, fupSport2, fupSport3, fupSkill1, fupSkill2, fupSkill3, updateLocation, fupPrice);
+                break;
+
             case R.id.profile:
                 //button for saving
 
@@ -178,29 +203,31 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
                 String upSkill1 = skill_level1.getSelectedItem().toString();
                 String upSkill2 = skill_level2.getSelectedItem().toString();
                 String upSkill3 = skill_level3.getSelectedItem().toString();
-                updateData(fAccount, upName, fSurname, upAge, fEmail, upSport1, upSport2, upSport3, upSkill1, upSkill2, upSkill3, fLocation);
+                String upPrice = current_price.getText().toString();
+                updateData(fAccount, upName, fSurname, upAge, fEmail, upSport1, upSport2, upSport3, upSkill1, upSkill2, upSkill3, fLocation, upPrice);
                 break;
         }
     }
 
-    public void updateData(String account, String name, String surname, String age, String email, String sport1, String sport2, String sport3, String skill1, String skill2, String Skill3, String location){
+    public void updateData(String account, String name, String surname, String age, String email, String sport1, String sport2, String sport3, String skill1, String skill2, String Skill3, String location, String price){
         String key = user.getUid();
-        User update = new User(account, name, surname, age, email, sport1, sport2,sport3, skill1, skill2, Skill3, location);
-        Map<String, Object> userValues = update.toMap();
+        Coach update = new Coach(account, name, surname, age, email, sport1, sport2,sport3, skill1, skill2, Skill3, location, price);
+        Map<String, Object> coachValues = update.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put(key, userValues);
+        childUpdates.put(key, coachValues);
 
         reference.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(Profilescreen.this, "Profile information saved!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfilescreenCoach.this, "Profile information saved!", Toast.LENGTH_SHORT).show();
                     //Back to login
                 } else {
-                    Toast.makeText(Profilescreen.this, "Updating information failed, try again!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfilescreenCoach.this, "Updating information failed, try again!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
     }
 }
