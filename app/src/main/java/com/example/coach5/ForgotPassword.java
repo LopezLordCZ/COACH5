@@ -3,21 +3,24 @@ package com.example.coach5;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class ForgotPassword extends AppCompatActivity {
+public class ForgotPassword extends AppCompatActivity implements View.OnClickListener {
 
     private EditText emailEditText;
+    private TextView title;
     private Button resetPassword;
     private ProgressBar progressBar;
 
@@ -32,14 +35,12 @@ public class ForgotPassword extends AppCompatActivity {
         resetPassword = (Button) findViewById(R.id.resetPassword);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
+        title = (TextView) findViewById(R.id.title);
+
         auth = FirebaseAuth.getInstance();
 
-        resetPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                resetPassword();
-            }
-        });
+        title.setOnClickListener(this);
+        resetPassword.setOnClickListener(this);
     }
 
     private void resetPassword() {
@@ -66,7 +67,20 @@ public class ForgotPassword extends AppCompatActivity {
                 } else {
                     Toast.makeText(ForgotPassword.this, "Something went wrong, try again!", Toast.LENGTH_LONG).show();
                 }
+                progressBar.setVisibility(View.GONE);
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.forgotpassword:
+                resetPassword();
+                break;
+            case R.id.title:
+                startActivity(new Intent(this, MainActivity.class));
+                break;
+        }
     }
 }
