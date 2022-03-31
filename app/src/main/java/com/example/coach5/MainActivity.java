@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                            startActivity(new Intent(MainActivity.this, HomescreenCoach.class));
+                        startActivity(new Intent(MainActivity.this, HomescreenCoach.class));
                     } else {
                         Toast.makeText(MainActivity.this, "Failed to login, try again", Toast.LENGTH_LONG).show();
                         progressBar.setVisibility(View.GONE);
