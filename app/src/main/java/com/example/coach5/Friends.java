@@ -17,6 +17,8 @@ public class Friends extends AppCompatActivity implements View.OnClickListener  
     private LinearLayout friendsList;
     private LayoutInflater inflater;
 
+    private boolean isCoach = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +33,14 @@ public class Friends extends AppCompatActivity implements View.OnClickListener  
 
         // Initialise the inflater to create new views
         inflater = getLayoutInflater();
+
+        // Retrieve user type if set
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            // Check if the user is a coach
+            String userType = (String) extras.getString("user_type");
+            isCoach = userType.equals("coach");
+        }
 
         addChatEntry("friend 1");
         addChatEntry("friend 2");
@@ -63,7 +73,13 @@ public class Friends extends AppCompatActivity implements View.OnClickListener  
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.backbutton) {
-            startActivity(new Intent(this, Homescreen.class));
+            // Go back to the different screen depending on user type
+            Class targetClass = Homescreen.class;
+            if(isCoach) {
+                targetClass = HomescreenCoach.class;
+            }
+
+            startActivity(new Intent(this, targetClass));
             return;
         }
 

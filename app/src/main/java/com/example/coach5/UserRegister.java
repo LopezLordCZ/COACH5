@@ -25,6 +25,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserRegister extends AppCompatActivity implements View.OnClickListener {
 
     private TextView title, register;
@@ -90,6 +93,7 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
         String sport3Skill = "Null";
         String location = "Null";
         String price = "Null";
+        //List<String> contacts = new ArrayList<>();
         final String[] accountType = {null};
 
         if (name.isEmpty()) {

@@ -49,12 +49,12 @@ public class HomescreenCoach extends AppCompatActivity implements View.OnClickLi
             reference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
                         Coach info = snapshot.getValue(Coach.class);
                         String coachEmail = info.email;
                         Log.d("firebase", coachEmail);
                         //make sure reference is same as current coach
-                        if (info.email.equals(email)){
+                        if (info.email.equals(email)) {
                             //save user specific info
                             fSport1 = info.sport1;
                             fSport2 = info.sport2;
@@ -99,7 +99,11 @@ public class HomescreenCoach extends AppCompatActivity implements View.OnClickLi
                 if ((fSport1.equals("Null") && fSkill1.equals("Null")) || (fSport2.equals("Null") && fSkill2.equals("Null")) || (fSport3.equals("Null") && fSkill3.equals("Null"))){
                     Toast.makeText(HomescreenCoach.this, "Complete your account first!", Toast.LENGTH_LONG).show();
                 } else {
-                    startActivity(new Intent(this, Friends.class));
+                    // Tell the matches page that the user is a coach
+                    Intent matchesIntent = new Intent(HomescreenCoach.this, Friends.class);
+                    matchesIntent.putExtra("user_type", "coach");
+
+                    startActivity(matchesIntent);
                 }
                 break;
         }
