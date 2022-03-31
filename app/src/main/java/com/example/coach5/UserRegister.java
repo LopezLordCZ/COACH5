@@ -19,8 +19,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class UserRegister extends AppCompatActivity implements View.OnClickListener {
 
@@ -29,7 +32,7 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
     private RadioButton user, coach;
     private ProgressBar progressBar;
 
-    private DatabaseReference reference;
+    private DatabaseReference reference, referenceCoach;
     private FirebaseAuth mAuth;
 
     @Override
@@ -39,6 +42,7 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
 
         mAuth = FirebaseAuth.getInstance();
         reference = FirebaseDatabase.getInstance().getReference("Users");
+        referenceCoach = FirebaseDatabase.getInstance().getReference("Coaches");
 
         title = (TextView) findViewById(R.id.title);
         title.setOnClickListener(this);
@@ -153,6 +157,38 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
             accountType[0] = "Coach";
         }
 
+        reference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    editTextEmail.setError("Email already taken");
+                    editTextEmail.requestFocus();
+                    return;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        referenceCoach.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    editTextEmail.setError("Email already taken");
+                    editTextEmail.requestFocus();
+                    return;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         progressBar.setVisibility(View.VISIBLE);
         String finalAccountType = accountType[0];
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -170,6 +206,7 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             Toast.makeText(UserRegister.this, "User has been successfully registered", Toast.LENGTH_LONG).show();
+                                            progressBar.setVisibility(View.GONE);
                                             //Back to login
                                         } else {
                                             Toast.makeText(UserRegister.this, "Registration failed, try again!", Toast.LENGTH_LONG).show();
@@ -192,6 +229,7 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             Toast.makeText(UserRegister.this, "Coach has been successfully registered", Toast.LENGTH_LONG).show();
+                                            progressBar.setVisibility(View.GONE);
                                             //Back to login
                                         } else {
                                             Toast.makeText(UserRegister.this, "Registration failed, try again!", Toast.LENGTH_LONG).show();
@@ -199,6 +237,9 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
                                         progressBar.setVisibility(View.GONE);
                                     }
                                 });
+                            } else {
+                                Toast.makeText(UserRegister.this, "Registration failed, try again!", Toast.LENGTH_LONG).show();
+                                progressBar.setVisibility(View.GONE);
                             }
                         }
                     }
