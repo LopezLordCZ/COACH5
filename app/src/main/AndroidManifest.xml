@@ -38,12 +38,6 @@
             android:name=".Homescreen"
             android:exported="false" />
         <activity
-            android:name=".HomescreenCoach"
-            android:exported="false" />
-        <activity
-            android:name=".ProfilescreenCoach"
-            android:exported="false" />
-        <activity
             android:name=".Profilescreen"
             android:exported="false" />
         <activity
