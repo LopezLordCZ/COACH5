@@ -52,22 +52,6 @@ public class Friends extends AppCompatActivity implements View.OnClickListener  
 
         back = (ImageView) findViewById(R.id.backbutton);
         back.setOnClickListener(this);
-
-        // Set layouts from the .xml file
-        //mainLayout = (LinearLayout) findViewById(R.id.friends_main_layout);
-        //friendsList = (LinearLayout) findViewById(R.id.friends_list);
-
-        // Initialise the inflater to create new views
-        //inflater = getLayoutInflater();
-
-        // Retrieve user type if set
-        //Bundle extras = getIntent().getExtras();
-        //if(extras != null) {
-            // Check if the user is a coach
-            //String userType = (String) extras.getString("user_type");
-            //isCoach = userType.equals("coach");
-        //}
-
     }
 
     @Override

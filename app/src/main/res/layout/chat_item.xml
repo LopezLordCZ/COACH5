@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/friend_item_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:layout_editor_absoluteX="16dp"
+    tools:layout_editor_absoluteY="80dp">
+
+    <TextView
+        android:id="@+id/friend_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10sp"
+        android:fontFamily="sans-serif-black"
+        android:text="Name"
+        android:textAlignment="center"
+        android:textColor="@color/purple_700"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

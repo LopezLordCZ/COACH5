@@ -90,7 +90,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MyViewHo
                         public void onDataChange(DataSnapshot snapshot) {
                             for (DataSnapshot contact: snapshot.getChildren()){
                                 Match matchInfo = contact.getValue(Match.class);
-                                v.getContext().startActivity(new Intent(con, Chat.class));
+                                v.getContext().startActivity(new Intent(con, Chat.class).putExtra("match", match));
                             }
                         }
                         @Override

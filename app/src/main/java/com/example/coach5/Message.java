@@ -1,6 +1,8 @@
 package com.example.coach5;
 
-public class Message {
+import java.io.Serializable;
+
+public class Message implements Serializable {
 
     public String sender, receiver, message;
 

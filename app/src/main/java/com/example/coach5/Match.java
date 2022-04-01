@@ -2,13 +2,14 @@ package com.example.coach5;
 
 import com.google.firebase.database.Exclude;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class Match {
+public class Match  implements Serializable {
 
     public String userID, coachID, userName, coachName;
     public ArrayList<Message> messages = new ArrayList();
