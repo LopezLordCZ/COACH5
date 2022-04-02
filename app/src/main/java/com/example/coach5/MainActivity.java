@@ -89,36 +89,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-    ////TEST
+    //App will close if location access denied
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        /*
-        switch(requestCode)
-        {
-            case 1:
-                if (grantResults.length > 0  && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                {
-                    // i am creating folder in external storage here
-                    File create_dir=new File(Environment.getExternalStorageDirectory()+"/uca/");
-
-                    Toast.makeText(this,"creating",Toast.LENGTH_LONG).show();
-                    create_dir.mkdirs();
-
-                }
-                else
-                {
-                    closeNow();
-                }
-                break;
-        }
-        */
-
-
-
-        //TEST 2
 
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED) {
