@@ -7,68 +7,83 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.auth.EmailAuthCredential;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class Friends extends AppCompatActivity implements View.OnClickListener  {
 
+    private DatabaseReference reference;
+    private FirebaseAuth mAuth;
     private ImageView back;
-    private LinearLayout mainLayout;
-    private LinearLayout friendsList;
-    private LayoutInflater inflater;
 
     private boolean isCoach = false;
+
+    RecyclerView recyclerView;
+    FriendsAdapter friendsAdapter;
+    ArrayList<Match> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends);
 
+
+        mAuth = FirebaseAuth.getInstance();
+        reference = FirebaseDatabase.getInstance().getReference("Matches");
+
+        recyclerView = findViewById(R.id.recyclerViewMatches);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         back = (ImageView) findViewById(R.id.backbutton);
         back.setOnClickListener(this);
+    }
 
-        // Set layouts from the .xml file
-        mainLayout = (LinearLayout) findViewById(R.id.friends_main_layout);
-        friendsList = (LinearLayout) findViewById(R.id.friends_list);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (reference != null) {
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
 
-        // Initialise the inflater to create new views
-        inflater = getLayoutInflater();
+                        list = new ArrayList<>();
+                        for (DataSnapshot child : snapshot.getChildren()) {
+                            Match match = child.getValue(Match.class);
+                            list.add(match);
+                        }
+                        friendsAdapter = new FriendsAdapter(getBaseContext(), list);
+                        recyclerView.setAdapter(friendsAdapter);
+                    }
+                    friendsAdapter.notifyDataSetChanged();
+                }
 
-        // Retrieve user type if set
-        Bundle extras = getIntent().getExtras();
-        if(extras != null) {
-            // Check if the user is a coach
-            String userType = (String) extras.getString("user_type");
-            isCoach = userType.equals("coach");
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    // calling on cancelled method when we receive
+                    // any error or we are not able to get the data.
+                    Toast.makeText(Friends.this, "Fail to get data.", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
-
-        addChatEntry("friend 1");
-        addChatEntry("friend 2");
-        addChatEntry("friend 3");
-        addChatEntry("friend 4");
-        addChatEntry("friend 5");
-        addChatEntry("friend 6");
-        addChatEntry("friend 7");
-        addChatEntry("friend 8");
-        addChatEntry("friend 9");
-        addChatEntry("friend 10");
     }
 
-    private void addChatEntry(String username) {
-        // Create a copy of the friends item view
-        View friendLayout = inflater.inflate(R.layout.friends_layout_item, friendsList, false);
-
-        // First edit its properties
-        TextView nameView = (TextView) friendLayout.findViewById(R.id.friend_name);
-        nameView.setText(username);
-        nameView.setTag("friend_name");
-
-        // Add the click listener
-        friendLayout.setOnClickListener(this);
-
-        // Add to main
-        friendsList.addView(friendLayout);
-    }
 
     @Override
     public void onClick(View v) {

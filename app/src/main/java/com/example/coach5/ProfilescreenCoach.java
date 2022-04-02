@@ -188,7 +188,7 @@ public class ProfilescreenCoach extends AppCompatActivity implements View.OnClic
 
             case R.id.location:
                 //button for saving the location
-                updateData(fAccount, fupName, fSurname, fupAge, fEmail, fupSport1, fupSport2, fupSport3, fupSkill1, fupSkill2, fupSkill3, updateLocation, fupPrice);
+                updateData(fAccount, fupName, fSurname, fupAge, fEmail, fupSport1, fupSport2, fupSport3, fupSkill1, fupSkill2, fupSkill3, updateLocation, fupPrice, false);
                 break;
 
             case R.id.profile:
@@ -204,12 +204,12 @@ public class ProfilescreenCoach extends AppCompatActivity implements View.OnClic
                 String upSkill2 = skill_level2.getSelectedItem().toString();
                 String upSkill3 = skill_level3.getSelectedItem().toString();
                 String upPrice = current_price.getText().toString();
-                updateData(fAccount, upName, fSurname, upAge, fEmail, upSport1, upSport2, upSport3, upSkill1, upSkill2, upSkill3, fLocation, upPrice);
+                updateData(fAccount, upName, fSurname, upAge, fEmail, upSport1, upSport2, upSport3, upSkill1, upSkill2, upSkill3, fLocation, upPrice, true);
                 break;
         }
     }
 
-    public void updateData(String account, String name, String surname, String age, String email, String sport1, String sport2, String sport3, String skill1, String skill2, String Skill3, String location, String price){
+    public void updateData(String account, String name, String surname, String age, String email, String sport1, String sport2, String sport3, String skill1, String skill2, String Skill3, String location, String price, boolean all){
         String key = user.getUid();
         Coach update = new Coach(account, name, surname, age, email, sport1, sport2,sport3, skill1, skill2, Skill3, location, price);
         Map<String, Object> coachValues = update.toMap();
@@ -221,8 +221,11 @@ public class ProfilescreenCoach extends AppCompatActivity implements View.OnClic
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(ProfilescreenCoach.this, "Profile information saved!", Toast.LENGTH_SHORT).show();
-                    //Back to login
+                    if (all == true){
+                        Toast.makeText(ProfilescreenCoach.this, "Profile information saved!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ProfilescreenCoach.this, "Location updated!", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(ProfilescreenCoach.this, "Updating information failed, try again!", Toast.LENGTH_SHORT).show();
                 }

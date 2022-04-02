@@ -34,6 +34,8 @@ public class Browse extends AppCompatActivity {
     SearchView searchView;
     BrowseAdapter browseAdapter;
     ArrayList<Coach> list;
+    ArrayList<String> listId = new ArrayList<>();
+    ArrayList<String[]> listIDemail = new ArrayList<String[]>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +65,11 @@ public class Browse extends AppCompatActivity {
                         for (DataSnapshot child : snapshot.getChildren()) {
                             Coach coach = child.getValue(Coach.class);
                             list.add(coach);
+                            String array[] = {coach.email, child.getKey()};
+                            listIDemail.add(array);
+                            listId.add(child.getKey());
                         }
-                        browseAdapter = new BrowseAdapter(list);
+                        browseAdapter = new BrowseAdapter(list, listId);
                         recyclerView.setAdapter(browseAdapter);
                     }
                     browseAdapter.notifyDataSetChanged();
@@ -96,12 +101,18 @@ public class Browse extends AppCompatActivity {
 
     private void search(String newText) {
         ArrayList<Coach> filterList = new ArrayList<>();
+        ArrayList<String> filterApplied = new ArrayList<>();
         for (Coach coach : list) {
             if (coach.searchCondition(newText)) { //filter condition
                 filterList.add(coach);
+                for (Integer i =0; i < listIDemail.size(); i++){
+                    if (listIDemail.get(i)[0] == coach.email){
+                        filterApplied.add(listIDemail.get(i)[2]);
+                    }
+                }
             }
         }
-        browseAdapter = new BrowseAdapter(filterList);
+        browseAdapter = new BrowseAdapter(filterList, filterApplied);
         recyclerView.setAdapter(browseAdapter);
 
     }

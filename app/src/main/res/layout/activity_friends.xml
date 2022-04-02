@@ -40,36 +40,19 @@
             app:layout_anchor="@+id/title"
             app:layout_anchorGravity="start"
             app:srcCompat="?attr/homeAsUpIndicator" />
-<!--
-        <Button
-            android:id="@+id/profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="490dp"
-            android:backgroundTint="#9C27B0"
-            android:text="chat"
-            android:textColor="#FFFFFF"
-            android:textSize="26sp"
-            android:textStyle="bold"
-            app:layout_anchor="@+id/backbutton"
-            app:layout_anchorGravity="bottom|center" />
--->
+
+
+        <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewMatches"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
+        android:background="@color/lightgray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
 
-        <LinearLayout
-            android:id="@+id/friends_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
 
-            <!-- Here new friend_layout_item's will get inflated -->
-        </LinearLayout>
-
-    </ScrollView>
-
-    <include layout="@layout/friends_layout_item" />
 </LinearLayout>
