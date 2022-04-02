@@ -9,7 +9,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.os.Environment;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -30,6 +33,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -82,10 +87,64 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+
+    ////TEST
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        /*
+        switch(requestCode)
+        {
+            case 1:
+                if (grantResults.length > 0  && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    // i am creating folder in external storage here
+                    File create_dir=new File(Environment.getExternalStorageDirectory()+"/uca/");
+
+                    Toast.makeText(this,"creating",Toast.LENGTH_LONG).show();
+                    create_dir.mkdirs();
+
+                }
+                else
+                {
+                    closeNow();
+                }
+                break;
+        }
+        */
+
+
+
+        //TEST 2
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED) {
+                closeNow();
+            }
+        }
+
+
+    }
+
+
+    private void closeNow() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            finishAffinity();
+        } else {
+            finish();
+        }
+    }
+
+
         void startService () {
             Intent intent = new Intent(MainActivity.this, LocationService.class);
             startService(intent);
         }
+
+
 
 
 
