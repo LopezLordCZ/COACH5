@@ -32,6 +32,8 @@ public class User implements Serializable {
 
     }
 
+    public String getName() { return name; }
+
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();

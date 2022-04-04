@@ -101,7 +101,7 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
                         User info = snapshot.getValue(User.class);
                         String userEmail = info.email;
                         //make sure reference is same as current user
-                        if (info.email.equals(email)){
+                        if (userEmail.equals(email)){
                             //save user specific info
                             fAccount = info.finalAccountType;
                             fSurname = info.surname;

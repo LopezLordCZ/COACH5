@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.EmailAuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +30,7 @@ public class Friends extends AppCompatActivity implements View.OnClickListener  
 
     private DatabaseReference reference;
     private FirebaseAuth mAuth;
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private ImageView back;
 
     private boolean isCoach = false;
@@ -66,7 +68,9 @@ public class Friends extends AppCompatActivity implements View.OnClickListener  
                         list = new ArrayList<>();
                         for (DataSnapshot child : snapshot.getChildren()) {
                             Match match = child.getValue(Match.class);
-                            list.add(match);
+                            if (user.getUid().equals(match.userID)){
+                                list.add(match);
+                            }
                         }
                         friendsAdapter = new FriendsAdapter(getBaseContext(), list);
                         recyclerView.setAdapter(friendsAdapter);
