@@ -2,6 +2,7 @@ package com.example.coach5;
 
 import android.content.Intent;
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,8 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -40,8 +43,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private TextView register, forgotPassword;
     private EditText editTextEmail, editTextPassword;
-    private RadioButton user, coach;
+    private RadioButton userButton, coachButton;
     private Button login;
+    private CheckBox mCheckBoxRemember;
+    private SharedPreferences mPrefs;
+    private static final String PREFS_NAME = "PrefsFile";
 
     private FirebaseAuth mAuth;
 
@@ -69,13 +75,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-        user = (RadioButton) findViewById(R.id.User);
-        coach = (RadioButton) findViewById(R.id.Coach);
+        userButton = (RadioButton) findViewById(R.id.User);
+        coachButton = (RadioButton) findViewById(R.id.Coach);
+
+        mCheckBoxRemember = (CheckBox) findViewById(R.id.Remember);
 
         mAuth = FirebaseAuth.getInstance();
 
+        mPrefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+
         reference = FirebaseDatabase.getInstance().getReference("Users");
         referenceCoach = FirebaseDatabase.getInstance().getReference("Coaches");
+        
+        getPreferencesData();
 
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -90,8 +102,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
-
     //App will close if location access denied
 
     @Override
@@ -104,10 +114,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 closeNow();
             }
         }
-
-
     }
-
 
     private void closeNow() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -117,19 +124,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
         void startService () {
             Intent intent = new Intent(MainActivity.this, LocationService.class);
             startService(intent);
         }
-
-
-
-
-
-
-
-
 
     @Override
     public void onClick(View v) {
@@ -176,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         progressBar.setVisibility(View.VISIBLE);
 
-        if (user.isChecked()) {
+        if (userButton.isChecked()) {
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -191,6 +189,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         editTextEmail.requestFocus();
                                         progressBar.setVisibility(View.GONE);
                                     } else {
+                                        if (mCheckBoxRemember.isChecked()) {
+                                            Boolean boolIsChecked = mCheckBoxRemember.isChecked();
+                                            Boolean boolUserIsChecked = userButton.isChecked();
+                                            Boolean boolCoachIsChecked = coachButton.isChecked();
+                                            SharedPreferences.Editor editor = mPrefs.edit();
+                                            editor.putBoolean("pref_user", boolUserIsChecked);
+                                            editor.putBoolean("pref_coach", boolCoachIsChecked);
+                                            editor.putString("pref_name", editTextEmail.getText().toString());
+                                            editor.putString("pref_pass", editTextPassword.getText().toString());
+                                            editor.putBoolean("pref_check", boolIsChecked);
+                                            editor.apply();
+                                            Toast.makeText(getApplicationContext(), "Settings has been saved", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            mPrefs.edit().clear().apply();
+                                        }
                                         startActivity(new Intent(MainActivity.this, Homescreen.class));
                                     }
                                 }
@@ -211,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
             });
-        } else if (coach.isChecked()) {
+        } else if (coachButton.isChecked()) {
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -226,6 +239,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         editTextEmail.requestFocus();
                                         progressBar.setVisibility(View.GONE);
                                     } else {
+                                        if (mCheckBoxRemember.isChecked()) {
+                                            Boolean boolIsChecked = mCheckBoxRemember.isChecked();
+                                            Boolean boolUserIsChecked = userButton.isChecked();
+                                            Boolean boolCoachIsChecked = coachButton.isChecked();
+                                            SharedPreferences.Editor editor = mPrefs.edit();
+                                            editor.putBoolean("pref_user", boolUserIsChecked);
+                                            editor.putBoolean("pref_coach", boolCoachIsChecked);
+                                            editor.putString("pref_name", editTextEmail.getText().toString());
+                                            editor.putString("pref_pass", editTextPassword.getText().toString());
+                                            editor.putBoolean("pref_check", boolIsChecked);
+                                            editor.apply();
+                                            Toast.makeText(getApplicationContext(), "Settings has been saved", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            mPrefs.edit().clear().apply();
+                                        }
                                         startActivity(new Intent(MainActivity.this, HomescreenCoach.class));
                                     }
                                 }
@@ -245,6 +273,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
             });
+        }
+    }
+
+    private void getPreferencesData() {
+        SharedPreferences sp = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        if(sp.contains("pref_user")) {
+            Boolean acc = sp.getBoolean("pref_user", false);
+            userButton.setChecked(acc);
+        }
+        if(sp.contains("pref_coach")) {
+            Boolean acc = sp.getBoolean("pref_coach", false);
+            coachButton.setChecked(acc);
+        }
+        if (sp.contains("pref_name")) {
+            String u = sp.getString("pref_name", "not found.");
+            editTextEmail.setText(u.toString());
+        }
+        if (sp.contains("pref_pass")) {
+            String p = sp.getString("pref_pass", "not found");
+            editTextPassword.setText(p.toString());
+        }
+        if (sp.contains("pref_check")) {
+            Boolean b = sp.getBoolean("pref_check", false);
+            mCheckBoxRemember.setChecked(b);
         }
     }
 }

@@ -2,6 +2,7 @@ package com.example.coach5;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -41,6 +42,9 @@ public class Homescreen extends AppCompatActivity implements View.OnClickListene
         switch(v.getId()) {
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
+                SharedPreferences preferences = getSharedPreferences("PrefsFile", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.clear().apply();
                 startActivity(new Intent(this, MainActivity.class));
                 Toast.makeText(Homescreen.this,"You have been logged out!", Toast.LENGTH_LONG).show();
                 break;
