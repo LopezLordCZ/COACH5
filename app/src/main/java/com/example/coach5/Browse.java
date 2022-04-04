@@ -107,7 +107,7 @@ public class Browse extends AppCompatActivity {
                 filterList.add(coach);
                 for (Integer i =0; i < listIDemail.size(); i++){
                     if (listIDemail.get(i)[0] == coach.email){
-                        filterApplied.add(listIDemail.get(i)[2]);
+                        filterApplied.add(listIDemail.get(i)[1]);
                     }
                 }
             }
