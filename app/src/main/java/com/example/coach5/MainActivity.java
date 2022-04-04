@@ -215,8 +215,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        //Redirect to the user main page
-                        startActivity(new Intent(MainActivity.this, Homescreen.class));
+                        if(user.isEmailVerified()) {
+                            startActivity(new Intent(MainActivity.this, Homescreen.class));
+                        } else {
+                            user.sendEmailVerification();
+                            Toast.makeText(MainActivity.this, "Check your email to verify your account", Toast.LENGTH_LONG).show();
+                            progressBar.setVisibility(View.GONE);
+                        }
                     } else {
                         Toast.makeText(MainActivity.this, "Failed to login, try again", Toast.LENGTH_LONG).show();
                         progressBar.setVisibility(View.GONE);
@@ -229,7 +234,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        startActivity(new Intent(MainActivity.this, HomescreenCoach.class));
+                        if(user.isEmailVerified()) {
+                            startActivity(new Intent(MainActivity.this, HomescreenCoach.class));
+                        } else {
+                            user.sendEmailVerification();
+                            Toast.makeText(MainActivity.this, "Check your email to verify your account", Toast.LENGTH_LONG).show();
+                            progressBar.setVisibility(View.GONE);
+                        }
                     } else {
                         Toast.makeText(MainActivity.this, "Failed to login, try again", Toast.LENGTH_LONG).show();
                         progressBar.setVisibility(View.GONE);

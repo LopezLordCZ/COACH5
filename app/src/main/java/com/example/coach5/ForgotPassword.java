@@ -24,7 +24,7 @@ public class ForgotPassword extends AppCompatActivity implements View.OnClickLis
     private Button resetPassword;
     private ProgressBar progressBar;
 
-    FirebaseAuth auth;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class ForgotPassword extends AppCompatActivity implements View.OnClickLis
 
         title = (TextView) findViewById(R.id.title);
 
-        auth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         title.setOnClickListener(this);
         resetPassword.setOnClickListener(this);
@@ -59,7 +59,7 @@ public class ForgotPassword extends AppCompatActivity implements View.OnClickLis
         }
 
         progressBar.setVisibility(View.VISIBLE);
-        auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
@@ -75,7 +75,7 @@ public class ForgotPassword extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.forgotpassword:
+            case R.id.resetPassword:
                 resetPassword();
                 break;
             case R.id.title:
