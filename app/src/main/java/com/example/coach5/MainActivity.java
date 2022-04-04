@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private ProgressBar progressBar;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -175,38 +174,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        if (user.isChecked()) {
-            referenceCoach.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        editTextEmail.setError("This email is registered as coach account");
-                        editTextEmail.requestFocus();
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-
-        } else if (coach.isChecked()) {
-            reference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        editTextEmail.setError("This email is registered as user account");
-                        editTextEmail.requestFocus();
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                }
-            });
-        }
-
         progressBar.setVisibility(View.VISIBLE);
 
         if (user.isChecked()) {
@@ -216,7 +183,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (task.isSuccessful()) {
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         if(user.isEmailVerified()) {
-                            startActivity(new Intent(MainActivity.this, Homescreen.class));
+                            referenceCoach.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()) {
+                                        editTextEmail.setError("This email is registered as coach account");
+                                        editTextEmail.requestFocus();
+                                        progressBar.setVisibility(View.GONE);
+                                    } else {
+                                        startActivity(new Intent(MainActivity.this, Homescreen.class));
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
                         } else {
                             user.sendEmailVerification();
                             Toast.makeText(MainActivity.this, "Check your email to verify your account", Toast.LENGTH_LONG).show();
@@ -235,7 +218,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (task.isSuccessful()) {
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         if(user.isEmailVerified()) {
-                            startActivity(new Intent(MainActivity.this, HomescreenCoach.class));
+                            reference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()) {
+                                        editTextEmail.setError("This email is registered as user account");
+                                        editTextEmail.requestFocus();
+                                        progressBar.setVisibility(View.GONE);
+                                    } else {
+                                        startActivity(new Intent(MainActivity.this, HomescreenCoach.class));
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                }
+                            });
                         } else {
                             user.sendEmailVerification();
                             Toast.makeText(MainActivity.this, "Check your email to verify your account", Toast.LENGTH_LONG).show();
@@ -248,6 +246,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             });
         }
-
     }
 }
