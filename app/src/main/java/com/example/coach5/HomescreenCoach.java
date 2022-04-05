@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 
 public class HomescreenCoach extends AppCompatActivity implements View.OnClickListener {
+    //setting up some variables
     private DatabaseReference reference;
     private TextView logout;
     private Button profile;
@@ -63,6 +64,11 @@ public class HomescreenCoach extends AppCompatActivity implements View.OnClickLi
                             fSkill1 = info.sport1Skill;
                             fSkill2 = info.sport2Skill;
                             fSkill3 = info.sport3Skill;
+
+                            //pop up message to remind coach to complete profile
+                            if ((fSport1.equals("Null") && fSkill1.equals("Null")) || (fSport2.equals("Null") && fSkill2.equals("Null")) || (fSport3.equals("Null") && fSkill3.equals("Null"))){
+                                Toast.makeText(HomescreenCoach.this, "Complete your account first!", Toast.LENGTH_LONG).show();
+                            }
                         }
                     }
                 }
@@ -74,9 +80,7 @@ public class HomescreenCoach extends AppCompatActivity implements View.OnClickLi
             });
         }
 
-        if ((fSport1.equals("Null") && fSkill1.equals("Null")) || (fSport2.equals("Null") && fSkill2.equals("Null")) || (fSport3.equals("Null") && fSkill3.equals("Null"))){
-            Toast.makeText(HomescreenCoach.this, "Complete your account first!", Toast.LENGTH_LONG).show();
-        }
+        //set up buttons and textview
         logout = (TextView) findViewById(R.id.logout);
         logout.setOnClickListener(this);
         profile = (Button) findViewById(R.id.profile);
@@ -89,6 +93,7 @@ public class HomescreenCoach extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.logout:
+                //logout button
                 FirebaseAuth.getInstance().signOut();
                 SharedPreferences preferences = getSharedPreferences("PrefsFile", MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
@@ -97,17 +102,15 @@ public class HomescreenCoach extends AppCompatActivity implements View.OnClickLi
                 Toast.makeText(HomescreenCoach.this,"You have been logged out!", Toast.LENGTH_LONG).show();
                 break;
             case R.id.profile:
+                //button to go to profile page
                 startActivity(new Intent(this, ProfilescreenCoach.class));
                 break;
             case R.id.Matches:
+                //only activate matches button if profile is complete
                 if ((fSport1.equals("Null") && fSkill1.equals("Null")) || (fSport2.equals("Null") && fSkill2.equals("Null")) || (fSport3.equals("Null") && fSkill3.equals("Null"))){
                     Toast.makeText(HomescreenCoach.this, "Complete your account first!", Toast.LENGTH_LONG).show();
                 } else {
-                    // Tell the matches page that the user is a coach
-                    Intent matchesIntent = new Intent(HomescreenCoach.this, Friends.class);
-                    matchesIntent.putExtra("user_type", "coach");
-
-                    startActivity(matchesIntent);
+                    startActivity(new Intent(this, Friendscoach.class));
                 }
                 break;
         }

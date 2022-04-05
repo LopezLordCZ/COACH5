@@ -27,6 +27,7 @@ public class Homescreen extends AppCompatActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homepage);
 
+        //setting up the buttons and textview
         logout = (TextView) findViewById(R.id.logout);
         logout.setOnClickListener(this);
         browse = (Button) findViewById(R.id.browse);
@@ -40,6 +41,7 @@ public class Homescreen extends AppCompatActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
+            //logout button
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
                 SharedPreferences preferences = getSharedPreferences("PrefsFile", MODE_PRIVATE);
@@ -49,12 +51,15 @@ public class Homescreen extends AppCompatActivity implements View.OnClickListene
                 Toast.makeText(Homescreen.this,"You have been logged out!", Toast.LENGTH_LONG).show();
                 break;
             case R.id.profile:
+                //profilescreen button
                 startActivity(new Intent(this, Profilescreen.class));
                 break;
             case R.id.browse:
+                //browse button
                 startActivity(new Intent(this, Browse.class));
                 break;
             case R.id.coaches:
+                //coaches button
                 startActivity(new Intent(this, Friends.class));
                 break;
         }

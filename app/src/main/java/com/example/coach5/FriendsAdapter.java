@@ -2,15 +2,11 @@ package com.example.coach5;
 
 import android.content.Context;
 import android.content.Intent;
-import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +31,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MyViewHo
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Matches");
 
+    //constructor
     public FriendsAdapter(Context con, ArrayList<Match> list) {
         context = con;
         in = new Intent(con,Homescreen.class);
@@ -58,8 +55,11 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MyViewHo
         holder.currentUser = currentUser;
         holder.ref = reference;
         holder.match = match;
-        holder.name.setText(match.getCoachName());
-
+        if(match.userID.equals(currentUser.getUid())){
+            holder.name.setText(match.getCoachName());
+        } else {
+            holder.name.setText(match.getUserName());
+        }
     }
 
     @Override
@@ -89,7 +89,6 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MyViewHo
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
                             for (DataSnapshot contact: snapshot.getChildren()){
-                                Match matchInfo = contact.getValue(Match.class);
                                 v.getContext().startActivity(new Intent(con, Chat.class).putExtra("match", match));
                             }
                         }
