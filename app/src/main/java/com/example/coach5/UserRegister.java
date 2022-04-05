@@ -93,7 +93,6 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
         String sport3Skill = "Null";
         String location = "Null";
         String price = "Null";
-        //List<String> contacts = new ArrayList<>();
         final String[] accountType = {null};
 
         if (name.isEmpty()) {

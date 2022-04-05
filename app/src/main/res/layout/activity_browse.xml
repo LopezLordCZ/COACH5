@@ -28,17 +28,50 @@
         android:layout_marginTop="0dp"
         app:layout_constraintTop_toTopOf="parent"
         />
-    
-    
+
+    <LinearLayout
+        android:id="@+id/linear_slider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/action_search"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="6dp"
+            android:text="Max distance:"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/action_slider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+
+            app:thumbColor="#9C27B0"
+            app:trackColor="#DEB4E4"
+            app:trackColorActive="#9C27B0"
+            app:haloColor="#F1CFF6"
+            app:tickVisible="false"
+            android:value="50.0"
+            android:valueFrom="0.0"
+            android:valueTo="100.0"
+            android:stepSize="1.0"  />
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCoaches"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="0dp"
         android:background="@color/lightgray"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/action_search" />
+        app:layout_constraintTop_toBottomOf="@+id/linear_slider" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
