@@ -33,14 +33,16 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
 
     ArrayList<Coach> list;
     ArrayList<String> listId;
+    String userName;
 
     //get current user
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
 
-    public BrowseAdapter(ArrayList<Coach> list, ArrayList<String> listId) {
+    public BrowseAdapter(ArrayList<Coach> list, ArrayList<String> listId, String userName) {
         this.listId = listId;
         this.list = list;
+        this.userName = userName;
     }
 
 
@@ -60,6 +62,7 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
         holder.coachID = listId.get(position);
         holder.coach = coach;
         holder.currentUser = currentUser;
+        holder.userName = userName;
         holder.ref = reference;
 
         holder.sport1.setText(coach.getSport1());
@@ -103,6 +106,8 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
         Button contactButton;
         Coach coach;
         String coachID;
+        String userName;
+        ArrayList<Message> list2 = new ArrayList<>();
         FirebaseUser currentUser;
         DatabaseReference ref;
 
@@ -129,9 +134,9 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
             contactButton.setOnClickListener(v -> {
                 if (v.getId() == R.id.contactButton) {
                     String Uid = currentUser.getUid();
+                    String UserEmail = currentUser.getEmail();
                     DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child("Matches");
                     DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference();
-
 
                     ref2.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -148,7 +153,9 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
                                     }
                                 }
                                 if (!matchExists){
-                                    Match newMatch = new Match(Uid, coachId, ref.child(Uid).child("name").toString(), coach.name);
+                                    Message message = new Message("Boundary security", "Boundary security", "Send a messsage to start chatting!");
+                                    list2.add(message);
+                                    Match newMatch = new Match(Uid, coachId, userName, coach.name, list2);
                                     Map<String, Object> testValues = newMatch.toMap();
                                     Map<String, Object> childupdates1 = new HashMap<>();
                                     childupdates1.put("Matches/"+Uid+coachId, testValues);

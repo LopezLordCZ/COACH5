@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.google.android.material.slider.Slider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,6 +31,8 @@ public class Browse extends AppCompatActivity {
 
     private DatabaseReference reference;
     private FirebaseAuth mAuth;
+    private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    String userName;
 
     RecyclerView recyclerView;
     SearchView searchView;
@@ -54,6 +57,26 @@ public class Browse extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        String UserEmail = currentUser.getEmail();
+
+        FirebaseDatabase.getInstance().getReference().child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot Dsnapshot: snapshot.getChildren()) {
+                    User info = Dsnapshot.getValue(User.class);
+                    if (UserEmail.equals(info.email)){
+                        userName = info.name;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
     }
 
     @Override
@@ -73,7 +96,7 @@ public class Browse extends AppCompatActivity {
                             listIDemail.add(array);
                             listId.add(child.getKey());
                         }
-                        browseAdapter = new BrowseAdapter(list, listId);
+                        browseAdapter = new BrowseAdapter(list, listId, userName);
                         recyclerView.setAdapter(browseAdapter);
                     }
                     browseAdapter.notifyDataSetChanged();
@@ -140,7 +163,7 @@ public class Browse extends AppCompatActivity {
                 }
             }
         }
-        browseAdapter = new BrowseAdapter(filterList, filterApplied);
+        browseAdapter = new BrowseAdapter(filterList, filterApplied, userName);
         recyclerView.setAdapter(browseAdapter);
 
     }

@@ -21,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class Friends extends AppCompatActivity implements View.OnClickListener  {
+public class Friendscoach extends AppCompatActivity implements View.OnClickListener  {
 
     //setting up variables
     private DatabaseReference reference;
@@ -60,7 +60,7 @@ public class Friends extends AppCompatActivity implements View.OnClickListener  
                         list = new ArrayList<>();
                         for (DataSnapshot child : snapshot.getChildren()) {
                             Match match = child.getValue(Match.class);
-                            if (user.getUid().equals(match.userID)){
+                            if (user.getUid().equals(match.coachID)){
                                 list.add(match);
                             }
                         }
@@ -74,7 +74,7 @@ public class Friends extends AppCompatActivity implements View.OnClickListener  
                 public void onCancelled(@NonNull DatabaseError error) {
                     // calling on cancelled method when we receive
                     // any error or we are not able to get the data.
-                    Toast.makeText(Friends.this, "Fail to get data.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Friendscoach.this, "Fail to get data.", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -84,10 +84,10 @@ public class Friends extends AppCompatActivity implements View.OnClickListener  
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
-            //going back to the homescreen using the back button
+            //go back to the right homescreen
             case R.id.backbutton:
-            startActivity(new Intent(this, Homescreen.class));
-            break;
+                startActivity(new Intent(this, HomescreenCoach.class));
+                break;
         }
     }
 }

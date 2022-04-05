@@ -21,6 +21,9 @@ import com.google.android.gms.location.LocationServices;
     public class LocationService extends Service {
         FusedLocationProviderClient fusedLocationProviderClient;
         LocationCallback locationCallback;
+        //Location for distance
+        public double latitudeUser; // Latitude
+        public double longitudeUser; // Longitude
 
         @Override
         public IBinder onBind(Intent intent) {
@@ -37,6 +40,9 @@ import com.google.android.gms.location.LocationServices;
                     super.onLocationResult(locationResult);
                     Log.d("mylog", "Lat is: " + locationResult.getLastLocation().getLatitude()
                             + ", " + "Lng is: " + locationResult.getLastLocation().getLongitude());
+
+                    latitudeUser = locationResult.getLastLocation().getLatitude();
+                    longitudeUser = locationResult.getLastLocation().getLongitude();
                 }
             };
         }
@@ -49,7 +55,7 @@ import com.google.android.gms.location.LocationServices;
 
         private void requestLocation() {
             LocationRequest locationRequest = new LocationRequest();
-            locationRequest.setInterval(20000);
+            //locationRequest.setInterval(20000);
             locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
@@ -63,6 +69,11 @@ import com.google.android.gms.location.LocationServices;
             }
             fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
         }
+
+
+
+
+
 
     }
 

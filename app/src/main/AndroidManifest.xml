@@ -29,6 +29,9 @@
             android:name=".Friends"
             android:exported="false" />
         <activity
+            android:name=".Friendscoach"
+            android:exported="false" />
+        <activity
             android:name=".HomescreenCoach"
             android:exported="false" />
         <activity

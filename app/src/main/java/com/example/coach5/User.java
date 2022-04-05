@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class User implements Serializable {
 
-    public String finalAccountType, name, surname, age, email, sport1, sport2, sport3, sport1Skill, sport2Skill, sport3Skill, location;
+    public String finalAccountType, name, surname, age, email, sport1, sport2, sport3, sport1Skill, sport2Skill, sport3Skill, location, longitudeUser, latitudeUser;
 
     public User() {
     }
@@ -27,7 +27,12 @@ public class User implements Serializable {
         this.sport2Skill = sport2Skill;
         this.sport3Skill = sport3Skill;
         this.location = location;
+        this.longitudeUser = longitudeUser;
+        this.latitudeUser = latitudeUser;
+
     }
+
+    public String getName() { return name; }
 
     @Exclude
     public Map<String, Object> toMap() {
@@ -44,6 +49,8 @@ public class User implements Serializable {
         result.put("sport2Skill", sport2Skill);
         result.put("sport3Skill", sport3Skill);
         result.put("location", location);
+        result.put("longitudeUser", longitudeUser);
+        result.put("latitudeUser", latitudeUser);
 
         return result;
     }
