@@ -69,6 +69,7 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
         holder.skill1.setText(coach.getSkill1());
         holder.name.setText(coach.getName());
         holder.age.setText(coach.getAge());
+        holder.distance.setText(coach.getLocation() + "km");
 
         if (coach.getSport2().equals("Null")) { //make sport2 invisible if null
             holder.rowSport2.setVisibility(View.GONE);
@@ -101,7 +102,7 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView sport1, sport2, sport3, skill1, skill2, skill3, name, age, rate;
+        TextView sport1, sport2, sport3, skill1, skill2, skill3, name, age, rate, distance;
         LinearLayout rowRate, rowSport2, rowSkill2, rowSport3, rowSkill3;
         Button contactButton;
         Coach coach;
@@ -123,6 +124,7 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
             name = itemView.findViewById(R.id.tvName);
             age = itemView.findViewById(R.id.tvAge);
             rate = itemView.findViewById(R.id.tvRate);
+            distance = itemView.findViewById(R.id.tvDistance);
 
             rowSport2 = itemView.findViewById(R.id.rowSport2);
             rowSkill2 = itemView.findViewById(R.id.rowSkill2);

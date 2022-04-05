@@ -176,7 +176,7 @@ public class Browse extends AppCompatActivity {
         for (Coach coach : list) {
             int x = 101;
             try{
-                x = Integer.parseInt(coach.age); //
+                x = Integer.parseInt(coach.location); //
                 System.out.println(x); //
             }
             catch (NumberFormatException e){
@@ -191,7 +191,7 @@ public class Browse extends AppCompatActivity {
                 }
             }
         }
-        browseAdapter = new BrowseAdapter(filterList, filterApplied);
+        browseAdapter = new BrowseAdapter(filterList, filterApplied, userName);
         recyclerView.setAdapter(browseAdapter);
     }
 }
