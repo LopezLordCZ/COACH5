@@ -95,7 +95,6 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
         Double lon = 0.0;
         Double lat = 0.0;
         String price = "Null";
-        //List<String> contacts = new ArrayList<>();
         final String[] accountType = {null};
 
         if (name.isEmpty()) {

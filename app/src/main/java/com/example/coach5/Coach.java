@@ -58,6 +58,7 @@ public class Coach {
     public String getName() { return name; }
     public String getAge() { return age; }
     public String getRate() { return price; }
+    public String getLocation() { return location; }
 
     public Boolean searchCondition(String str) {
         Boolean result = false;

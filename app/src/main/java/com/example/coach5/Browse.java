@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.slider.Slider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -35,6 +36,7 @@ public class Browse extends AppCompatActivity {
 
     RecyclerView recyclerView;
     SearchView searchView;
+    Slider slider;
     BrowseAdapter browseAdapter;
     ArrayList<Coach> list;
     ArrayList<String> listId = new ArrayList<>();
@@ -49,6 +51,8 @@ public class Browse extends AppCompatActivity {
         reference = FirebaseDatabase.getInstance().getReference("Coaches");
 
         searchView = findViewById(R.id.action_search);
+        slider = findViewById(R.id.action_slider);
+
         recyclerView = findViewById(R.id.recyclerViewCoaches);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -106,6 +110,7 @@ public class Browse extends AppCompatActivity {
                 }
             });
         }
+
         if (searchView != null) {
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
@@ -120,7 +125,29 @@ public class Browse extends AppCompatActivity {
                 }
             });
         }
+
+        if (slider != null) {
+            slider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+                @Override
+                public void onStartTrackingTouch(@NonNull Slider slider) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(@NonNull Slider slider) {
+                    System.out.println(slider.getValue());
+                    filterLocation(slider.getValue());
+                }
+            });
+
+
+
+        }
+
+
+
     }
+
 
     private void search(String newText) {
         ArrayList<Coach> filterList = new ArrayList<>();
@@ -128,7 +155,8 @@ public class Browse extends AppCompatActivity {
         for (Coach coach : list) {
             if (coach.searchCondition(newText)) { //filter condition
                 filterList.add(coach);
-                for (Integer i =0; i < listIDemail.size(); i++){
+                System.out.println(listIDemail.size());
+                for (int i = 0; i < listIDemail.size(); i++){
                     if (listIDemail.get(i)[0] == coach.email){
                         filterApplied.add(listIDemail.get(i)[1]);
                     }
@@ -141,4 +169,29 @@ public class Browse extends AppCompatActivity {
     }
 
 
+
+    private void filterLocation(Float val) {
+        ArrayList<Coach> filterList = new ArrayList<>();
+        ArrayList<String> filterApplied = new ArrayList<>();
+        for (Coach coach : list) {
+            int x = 101;
+            try{
+                x = Integer.parseInt(coach.location); //
+                System.out.println(x); //
+            }
+            catch (NumberFormatException e){
+                e.printStackTrace();
+            }
+            if (x < val) { //filter condition
+                filterList.add(coach);
+                for (int i = 0; i < listIDemail.size(); i++){
+                    if (listIDemail.get(i)[0] == coach.email){
+                        filterApplied.add(listIDemail.get(i)[1]);
+                    }
+                }
+            }
+        }
+        browseAdapter = new BrowseAdapter(filterList, filterApplied, userName);
+        recyclerView.setAdapter(browseAdapter);
+    }
 }
