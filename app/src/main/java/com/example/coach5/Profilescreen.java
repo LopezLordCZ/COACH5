@@ -42,7 +42,6 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
     private String fAccount;
     private String fSurname;
     private String fEmail;
-    private String updateLocation;
     private String fupName;
     private String fupAge;
     private String fupSport1;
@@ -51,7 +50,8 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
     private String fupSkill1;
     private String fupSkill2;
     private String fupSkill3;
-    private String fLocation;
+    private Double lonLocation;
+    private Double latLocation;
     //get current user
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -106,7 +106,9 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
                             fAccount = info.finalAccountType;
                             fSurname = info.surname;
                             fEmail = info.email;
-                            fLocation = info.location;
+                            lonLocation = info.longitudeUser;
+                            latLocation = info.latitudeUser;
+
                             fupName = info.name;
                             fupAge = info.age;
                             fupSport1 = info.sport1;
@@ -189,7 +191,9 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
 
             case R.id.location:
                 //button for saving the location
-                updateData(fAccount, fupName, fSurname, fupAge, fEmail, fupSport1, fupSport2, fupSport3, fupSkill1, fupSkill2, fupSkill3, updateLocation, false);
+                Intent intent = new Intent(Profilescreen.this, LocationService.class);
+                startService(intent);
+                updateData(fAccount, fupName, fSurname, fupAge, fEmail, fupSport1, fupSport2, fupSport3, fupSkill1, fupSkill2, fupSkill3, //here the long you get from the, here latitude you get, false);
                 break;
 
             case R.id.profile:
@@ -204,14 +208,14 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
                 String upSkill1 = skill_level1.getSelectedItem().toString();
                 String upSkill2 = skill_level2.getSelectedItem().toString();
                 String upSkill3 = skill_level3.getSelectedItem().toString();
-                updateData(fAccount, upName, fSurname, upAge, fEmail, upSport1, upSport2, upSport3, upSkill1, upSkill2, upSkill3, fLocation, true);
+                updateData(fAccount, upName, fSurname, upAge, fEmail, upSport1, upSport2, upSport3, upSkill1, upSkill2, upSkill3, lonLocation, latLocation, true);
                 break;
         }
     }
 
-    public void updateData(String account, String name, String surname, String age, String email, String sport1, String sport2, String sport3, String skill1, String skill2, String Skill3, String location, boolean all){
+    public void updateData(String account, String name, String surname, String age, String email, String sport1, String sport2, String sport3, String skill1, String skill2, String Skill3, Double lon, Double lat, boolean all){
         String key = user.getUid();
-        User update = new User(account, name, surname, age, email, sport1, sport2,sport3, skill1, skill2, Skill3, location);
+        User update = new User(account, name, surname, age, email, sport1, sport2,sport3, skill1, skill2, Skill3, lon, lat);
         Map<String, Object> userValues = update.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();

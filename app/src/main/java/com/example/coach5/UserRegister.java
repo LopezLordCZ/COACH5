@@ -92,6 +92,8 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
         String sport2Skill = "Null";
         String sport3Skill = "Null";
         String location = "Null";
+        Double lon = 0.0;
+        Double lat = 0.0;
         String price = "Null";
         //List<String> contacts = new ArrayList<>();
         final String[] accountType = {null};
@@ -201,7 +203,7 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (accountType[0].equals("User")) {
                             if (task.isSuccessful()) {
-                                User user = new User(finalAccountType, name, surname, age, email, sport1, sport2, sport3, sport1Skill, sport2Skill, sport3Skill, location);
+                                User user = new User(finalAccountType, name, surname, age, email, sport1, sport2, sport3, sport1Skill, sport2Skill, sport3Skill, lon, lat);
 
                                 FirebaseDatabase.getInstance().getReference("Users")
                                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
