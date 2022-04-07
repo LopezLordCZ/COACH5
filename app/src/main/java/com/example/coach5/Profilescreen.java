@@ -1,6 +1,11 @@
 package com.example.coach5;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -16,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,7 +48,6 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
     private String fAccount;
     private String fSurname;
     private String fEmail;
-    private String updateLocation;
     private String fupName;
     private String fupAge;
     private String fupSport1;
@@ -52,6 +57,9 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
     private String fupSkill2;
     private String fupSkill3;
     private String fLocation;
+    private Double fLat;
+    private Double fLng;
+
     //get current user
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -107,6 +115,8 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
                             fSurname = info.surname;
                             fEmail = info.email;
                             fLocation = info.location;
+                            fLat = info.lat;
+                            fLng = info.lng;
                             fupName = info.name;
                             fupAge = info.age;
                             fupSport1 = info.sport1;
@@ -121,34 +131,22 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
                             current_age.setText(info.age);
 
                             //set spinners
-                            if (info.sport1.equals("Null")){
-                                //do noting, not filled in field
-                            }else{
+                            if (!info.sport1.equals("Null")){
                                 sport1.setSelection(adapterSport.getPosition(info.sport1));
                             }
-                            if (info.sport2.equals("Null")){
-                                //do noting, not filled in field
-                            }else{
+                            if (!info.sport2.equals("Null")){
                                 sport2.setSelection(adapterSport.getPosition(info.sport2));
                             }
-                            if (info.sport3.equals("Null")){
-                                //do noting, not filled in field
-                            }else{
+                            if (!info.sport3.equals("Null")){
                                 sport3.setSelection(adapterSport.getPosition(info.sport3));
                             }
-                            if (info.sport1Skill.equals("Null")){
-                                //do noting, not filled in field
-                            }else{
+                            if (!info.sport1Skill.equals("Null")){
                                 skill_level1.setSelection(adapterSkill_level.getPosition(info.sport1Skill));
                             }
-                            if (info.sport2Skill.equals("Null")){
-                                //do noting, not filled in field
-                            }else{
+                            if (!info.sport2Skill.equals("Null")){
                                 skill_level2.setSelection(adapterSkill_level.getPosition(info.sport2Skill));
                             }
-                            if (info.sport3Skill.equals("Null")){
-                                //do noting, not filled in field
-                            }else{
+                            if (!info.sport3Skill.equals("Null")){
                                 skill_level3.setSelection(adapterSkill_level.getPosition(info.sport3Skill));
                             }
                         }
@@ -181,6 +179,7 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
         Spinner skill_level1 = findViewById(R.id.skill_level1);
         Spinner skill_level2 = findViewById(R.id.skill_level2);
         Spinner skill_level3 = findViewById(R.id.skill_level3);
+
         switch(v.getId()) {
             case R.id.imageView2:
                 //back button
@@ -188,8 +187,25 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
                 break;
 
             case R.id.location:
+
+                // instantiate the location manager, note you will need to request permissions in your manifest
+                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                // get the last know location from your location manager.
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                Double upLat = location.getLatitude();
+                Double upLng = location.getLongitude();
                 //button for saving the location
-                updateData(fAccount, fupName, fSurname, fupAge, fEmail, fupSport1, fupSport2, fupSport3, fupSkill1, fupSkill2, fupSkill3, updateLocation, false);
+                updateData(fAccount, fupName, fSurname, fupAge, fEmail, fupSport1, fupSport2, fupSport3, fupSkill1, fupSkill2, fupSkill3, fLocation, upLat, upLng, false);
                 break;
 
             case R.id.profile:
@@ -204,14 +220,14 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
                 String upSkill1 = skill_level1.getSelectedItem().toString();
                 String upSkill2 = skill_level2.getSelectedItem().toString();
                 String upSkill3 = skill_level3.getSelectedItem().toString();
-                updateData(fAccount, upName, fSurname, upAge, fEmail, upSport1, upSport2, upSport3, upSkill1, upSkill2, upSkill3, fLocation, true);
+                updateData(fAccount, upName, fSurname, upAge, fEmail, upSport1, upSport2, upSport3, upSkill1, upSkill2, upSkill3, fLocation, fLat, fLng, true);
                 break;
         }
     }
 
-    public void updateData(String account, String name, String surname, String age, String email, String sport1, String sport2, String sport3, String skill1, String skill2, String Skill3, String location, boolean all){
+    public void updateData(String account, String name, String surname, String age, String email, String sport1, String sport2, String sport3, String skill1, String skill2, String Skill3, String location, Double lat, Double lng, boolean all){
         String key = user.getUid();
-        User update = new User(account, name, surname, age, email, sport1, sport2,sport3, skill1, skill2, Skill3, location);
+        User update = new User(account, name, surname, age, email, sport1, sport2,sport3, skill1, skill2, Skill3, location, lat, lng);
         Map<String, Object> userValues = update.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();

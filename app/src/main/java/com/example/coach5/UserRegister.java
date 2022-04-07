@@ -92,6 +92,8 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
         String sport2Skill = "Null";
         String sport3Skill = "Null";
         String location = "Null";
+        Double lat = 0.0;
+        Double lng = 0.0;
         String price = "Null";
         final String[] accountType = {null};
 
@@ -200,7 +202,7 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (accountType[0].equals("User")) {
                             if (task.isSuccessful()) {
-                                User user = new User(finalAccountType, name, surname, age, email, sport1, sport2, sport3, sport1Skill, sport2Skill, sport3Skill, location);
+                                User user = new User(finalAccountType, name, surname, age, email, sport1, sport2, sport3, sport1Skill, sport2Skill, sport3Skill, location, lat, lng);
 
                                 FirebaseDatabase.getInstance().getReference("Users")
                                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -223,7 +225,7 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
                             }
                         } else if (accountType[0].equals("Coach")) {
                             if (task.isSuccessful()) {
-                                Coach coach = new Coach(finalAccountType, name, surname, age, email, sport1, sport2, sport3, sport1Skill, sport2Skill, sport3Skill, location, price);
+                                Coach coach = new Coach(finalAccountType, name, surname, age, email, sport1, sport2, sport3, sport1Skill, sport2Skill, sport3Skill, location, price, lat, lng);
 
                                 FirebaseDatabase.getInstance().getReference("Coaches")
                                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())

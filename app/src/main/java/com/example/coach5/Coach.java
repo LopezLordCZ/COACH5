@@ -8,12 +8,13 @@ import java.util.Map;
 public class Coach {
 
     public String finalAccountType, name, surname, age, email, sport1, sport2, sport3, sport1Skill, sport2Skill, sport3Skill, location, price;
+    public Double lat, lng;
 
     public Coach() {
 
     }
 
-    public Coach(String finalAccountType, String name, String surname, String age, String email, String sport1, String sport2, String sport3, String sport1Skill, String sport2Skill, String sport3Skill, String location, String price) {
+    public Coach(String finalAccountType, String name, String surname, String age, String email, String sport1, String sport2, String sport3, String sport1Skill, String sport2Skill, String sport3Skill, String location, String price, Double lat, Double lng) {
         this.finalAccountType = finalAccountType;
         this.name = name;
         this.surname = surname;
@@ -27,6 +28,8 @@ public class Coach {
         this.sport3Skill = sport3Skill;
         this.location = location;
         this.price = price;
+        this.lat = lat;
+        this.lng = lng;
     }
 
     @Exclude
@@ -45,6 +48,8 @@ public class Coach {
         result.put("sport3Skill", sport3Skill);
         result.put("location", location);
         result.put("price", price);
+        result.put("lat", lat);
+        result.put("lng", lng);
 
         return result;
     }
@@ -59,6 +64,9 @@ public class Coach {
     public String getAge() { return age; }
     public String getRate() { return price; }
     public String getLocation() { return location; }
+    public Double getLat() { return lat; }
+    public Double getLng() { return lng; }
+
 
     public Boolean searchCondition(String str) {
         Boolean result = false;

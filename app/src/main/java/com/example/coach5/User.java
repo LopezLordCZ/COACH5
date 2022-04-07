@@ -9,12 +9,13 @@ import java.util.Map;
 
 public class User implements Serializable {
 
-    public String finalAccountType, name, surname, age, email, sport1, sport2, sport3, sport1Skill, sport2Skill, sport3Skill, location, longitudeUser, latitudeUser;
+    public String finalAccountType, name, surname, age, email, sport1, sport2, sport3, sport1Skill, sport2Skill, sport3Skill, location;
+    public Double lat, lng;
 
     public User() {
     }
 
-    public User(String finalAccountType, String name, String surname, String age, String email, String sport1, String sport2, String sport3, String sport1Skill, String sport2Skill, String sport3Skill, String location) {
+    public User(String finalAccountType, String name, String surname, String age, String email, String sport1, String sport2, String sport3, String sport1Skill, String sport2Skill, String sport3Skill, String location, Double lat, Double lng) {
         this.finalAccountType = finalAccountType;
         this.name = name;
         this.surname = surname;
@@ -27,12 +28,15 @@ public class User implements Serializable {
         this.sport2Skill = sport2Skill;
         this.sport3Skill = sport3Skill;
         this.location = location;
-        this.longitudeUser = longitudeUser;
-        this.latitudeUser = latitudeUser;
+        this.lat = lat;
+        this.lng = lng;
 
     }
 
     public String getName() { return name; }
+    public Double getLat() { return lat; }
+    public Double getLng() { return lng; }
+
 
     @Exclude
     public Map<String, Object> toMap() {
@@ -49,8 +53,8 @@ public class User implements Serializable {
         result.put("sport2Skill", sport2Skill);
         result.put("sport3Skill", sport3Skill);
         result.put("location", location);
-        result.put("longitudeUser", longitudeUser);
-        result.put("latitudeUser", latitudeUser);
+        result.put("lat", lat);
+        result.put("lng", lng);
 
         return result;
     }

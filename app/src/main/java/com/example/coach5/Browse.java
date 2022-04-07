@@ -33,6 +33,8 @@ public class Browse extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     String userName;
+    Double userLat;
+    Double userLng;
 
     RecyclerView recyclerView;
     SearchView searchView;
@@ -66,6 +68,8 @@ public class Browse extends AppCompatActivity {
                     User info = Dsnapshot.getValue(User.class);
                     if (UserEmail.equals(info.email)){
                         userName = info.name;
+                        userLat = info.lat;
+                        userLng = info.lng;
                     }
                 }
             }
@@ -75,9 +79,8 @@ public class Browse extends AppCompatActivity {
 
             }
         });
-
-
     }
+
 
     @Override
     protected void onStart() {
@@ -106,7 +109,7 @@ public class Browse extends AppCompatActivity {
                 public void onCancelled(@NonNull DatabaseError error) {
                     // calling on cancelled method when we receive
                     // any error or we are not able to get the data.
-                    Toast.makeText(Browse.this, "Fail to get data.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Browse.this, "Failed to get data.", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -135,7 +138,6 @@ public class Browse extends AppCompatActivity {
 
                 @Override
                 public void onStopTrackingTouch(@NonNull Slider slider) {
-                    System.out.println(slider.getValue());
                     filterLocation(slider.getValue());
                 }
             });
@@ -173,17 +175,23 @@ public class Browse extends AppCompatActivity {
     private void filterLocation(Float val) {
         ArrayList<Coach> filterList = new ArrayList<>();
         ArrayList<String> filterApplied = new ArrayList<>();
+        if (userLat == null){
+            Toast toast = Toast.makeText(findViewById(R.id.browse).getContext(), "Update location to use all features", Toast.LENGTH_LONG);
+            toast.show();
+        }
         for (Coach coach : list) {
-            int x = 101;
-            try{
-                x = Integer.parseInt(coach.location); //
-                System.out.println(x); //
+
+            double d = -0.1;
+
+            if (userLat != null && userLng != null && coach.getLat() != null && coach.getLng() != null) {
+                Double coachLat = coach.getLat();
+                Double coachLng = coach.getLng();
+                Distance dist = new Distance();
+                d = dist.calcDistance(userLat, coachLat, userLng, coachLng);
             }
-            catch (NumberFormatException e){
-                e.printStackTrace();
-            }
-            if (x < val) { //filter condition
-                filterList.add(coach);
+
+            if (d < val) { // if distance is to coach is smaller than range slider value
+                filterList.add(coach); // add coach to filter list
                 for (int i = 0; i < listIDemail.size(); i++){
                     if (listIDemail.get(i)[0] == coach.email){
                         filterApplied.add(listIDemail.get(i)[1]);

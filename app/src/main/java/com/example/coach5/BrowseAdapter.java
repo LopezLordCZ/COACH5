@@ -58,6 +58,7 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         Coach coach = list.get(position); //get coach
+        String currentUid = currentUser.getUid();
 
         holder.coachID = listId.get(position);
         holder.coach = coach;
@@ -69,7 +70,39 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
         holder.skill1.setText(coach.getSkill1());
         holder.name.setText(coach.getName());
         holder.age.setText(coach.getAge());
-        holder.distance.setText(coach.getLocation() + "km");
+
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                for (DataSnapshot child: snapshot.getChildren()){
+                    String uid = child.getKey();
+                    if (currentUid.equals(uid)) {
+                        Boolean hasLat = child.hasChild("lat");
+                        Boolean latIsNotNull = !(coach.getLat() == null);
+                        if (latIsNotNull && hasLat){
+                            User user = child.getValue(User.class);
+                            Double uLat = user.getLat();
+                            Double uLng = user.getLng();
+                            Double cLat = coach.getLat();
+                            Double cLng = coach.getLng();
+                            //Double dist = calcDistance(uLat, cLat, uLng, cLng);
+                            Distance dist = new Distance();
+                            Double d = dist.calcDistance(uLat, cLat, uLng, cLng);
+
+                            System.out.println(d);
+                            String distStr = Double.toString(d);
+                            holder.distance.setText(distStr + "km");
+                        }
+                        else {
+                            holder.distance.setText("missing location data");
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
 
         if (coach.getSport2().equals("Null")) { //make sport2 invisible if null
             holder.rowSport2.setVisibility(View.GONE);
@@ -177,6 +210,21 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
                 }
             });
         }
+    }
+
+    public static double calcDistance(double lat1, double lat2, double lon1, double lon2) {
+
+        final int R = 6371; // Radius of the earth
+
+        double latDistance = Math.toRadians(lat2 - lat1);
+        double lonDistance = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = R * c;
+
+        return Math.round(distance);
     }
 
 }

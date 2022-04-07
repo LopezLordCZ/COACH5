@@ -1,6 +1,11 @@
 package com.example.coach5;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -36,7 +42,8 @@ public class ProfilescreenCoach extends AppCompatActivity implements View.OnClic
     private String fSurname;
     private String fEmail;
     private String fLocation;
-    private String updateLocation;
+    private Double fLat;
+    private Double fLng;
     private String fupName;
     private String fupAge;
     private String fupSport1;
@@ -93,17 +100,18 @@ public class ProfilescreenCoach extends AppCompatActivity implements View.OnClic
             reference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         Coach info = snapshot.getValue(Coach.class);
                         String coachEmail = info.email;
-                        Log.d("firebase", coachEmail);
                         //make sure reference is same as current coach
-                        if (info.email.equals(email)){
+                        if (info.email.equals(email)) {
                             //save user specific info
                             fAccount = info.finalAccountType;
                             fSurname = info.surname;
                             fEmail = info.email;
                             fLocation = info.location;
+                            fLat = info.lat;
+                            fLng = info.lng;
                             fupName = info.name;
                             fupAge = info.age;
                             fupSport1 = info.sport1;
@@ -114,39 +122,30 @@ public class ProfilescreenCoach extends AppCompatActivity implements View.OnClic
                             fupSkill3 = info.sport3Skill;
                             fupPrice = info.price;
 
+                            System.out.println("flat:::");
+                            System.out.println(fLat);
+
                             //set the front end name+age
                             current_name.setText(info.name);
                             current_age.setText(info.age);
 
                             //set spinners
-                            if (info.sport1.equals("Null")){
-                                //do noting, not filled in field
-                            }else{
+                            if (!info.sport1.equals("Null")) {
                                 sport1.setSelection(adapterSport.getPosition(info.sport1));
                             }
-                            if (info.sport2.equals("Null")){
-                                //do noting, not filled in field
-                            }else{
+                            if (!info.sport2.equals("Null")) {
                                 sport2.setSelection(adapterSport.getPosition(info.sport2));
                             }
-                            if (info.sport3.equals("Null")){
-                                //do noting, not filled in field
-                            }else{
+                            if (!info.sport3.equals("Null")) {
                                 sport3.setSelection(adapterSport.getPosition(info.sport3));
                             }
-                            if (info.sport1Skill.equals("Null")){
-                                //do noting, not filled in field
-                            }else{
+                            if (!info.sport1Skill.equals("Null")) {
                                 skill_level1.setSelection(adapterSkill_level.getPosition(info.sport1Skill));
                             }
-                            if (info.sport2Skill.equals("Null")){
-                                //do noting, not filled in field
-                            }else{
+                            if (!info.sport2Skill.equals("Null")) {
                                 skill_level2.setSelection(adapterSkill_level.getPosition(info.sport2Skill));
                             }
-                            if (info.sport3Skill.equals("Null")){
-                                //do noting, not filled in field
-                            }else{
+                            if (!info.sport3Skill.equals("Null")) {
                                 skill_level3.setSelection(adapterSkill_level.getPosition(info.sport3Skill));
                             }
                         }
@@ -180,19 +179,37 @@ public class ProfilescreenCoach extends AppCompatActivity implements View.OnClic
         Spinner skill_level1 = findViewById(R.id.skill_level1);
         Spinner skill_level2 = findViewById(R.id.skill_level2);
         Spinner skill_level3 = findViewById(R.id.skill_level3);
-        switch(v.getId()) {
-            case R.id.imageView2:
-                //back button
+
+        switch (v.getId()) {
+            case R.id.imageView2: //back button
                 startActivity(new Intent(this, HomescreenCoach.class));
                 break;
 
-            case R.id.location:
-                //button for saving the location
-                updateData(fAccount, fupName, fSurname, fupAge, fEmail, fupSport1, fupSport2, fupSport3, fupSkill1, fupSkill2, fupSkill3, updateLocation, fupPrice, false);
+            case R.id.location: //button for saving the location
+
+                // instantiate the location manager, note you will need to request permissions in your manifest
+                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                // get the last know location from your location manager.
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+                Double upLat = location.getLatitude();
+                Double upLng = location.getLongitude();
+                System.out.println("uplat");System.out.println(upLat);
+
+                updateData(fAccount, fupName, fSurname, fupAge, fEmail, fupSport1, fupSport2, fupSport3, fupSkill1, fupSkill2, fupSkill3, fLocation, fupPrice, upLat, upLng, false);
                 break;
 
-            case R.id.profile:
-                //button for saving
+            case R.id.profile: //button for saving
 
                 //get data
                 String upName = current_name.getText().toString();
@@ -204,14 +221,16 @@ public class ProfilescreenCoach extends AppCompatActivity implements View.OnClic
                 String upSkill2 = skill_level2.getSelectedItem().toString();
                 String upSkill3 = skill_level3.getSelectedItem().toString();
                 String upPrice = current_price.getText().toString();
-                updateData(fAccount, upName, fSurname, upAge, fEmail, upSport1, upSport2, upSport3, upSkill1, upSkill2, upSkill3, fLocation, upPrice, true);
+
+                updateData(fAccount, upName, fSurname, upAge, fEmail, upSport1, upSport2, upSport3, upSkill1, upSkill2, upSkill3, fLocation, upPrice, fLat, fLng, true);
                 break;
         }
     }
 
-    public void updateData(String account, String name, String surname, String age, String email, String sport1, String sport2, String sport3, String skill1, String skill2, String Skill3, String location, String price, boolean all){
+    public void updateData(String account, String name, String surname, String age, String email, String sport1, String sport2, String sport3, String skill1, String skill2, String Skill3, String location, String price, Double lat, Double lng, boolean all){
         String key = user.getUid();
-        Coach update = new Coach(account, name, surname, age, email, sport1, sport2,sport3, skill1, skill2, Skill3, location, price);
+        System.out.println("update data");
+        Coach update = new Coach(account, name, surname, age, email, sport1, sport2,sport3, skill1, skill2, Skill3, location, price, lat, lng);
         Map<String, Object> coachValues = update.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();

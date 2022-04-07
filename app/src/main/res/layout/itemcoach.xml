@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text="Roger Federer"
+                android:text="name"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -59,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text="40"
+                android:text="age"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -85,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text="Tennis"
+                android:text="sport"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -111,7 +111,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text="Proffesional"
+                android:text="skill"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -139,7 +139,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text="Squash"
+                android:text="sport"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -156,7 +156,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Skill-level"
+                android:text="skill"
                 android:textColor="@color/black"
                 android:textSize="22sp"
                 android:textStyle="bold"/>
@@ -166,7 +166,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text="Advanced"
+                android:text="skill"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -193,7 +193,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text="Golf"
+                android:text="sport"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -220,7 +220,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text="Beginner"
+                android:text="skill"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -247,7 +247,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text="$60/h"
+                android:text="rate"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -274,7 +274,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text="17km"
+                android:text="distance"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 

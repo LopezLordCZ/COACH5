@@ -71,7 +71,7 @@
                 android:layout_width="360dp"
                 android:layout_height="140dp"
                 android:layout_marginTop="220sp"
-                android:layout_marginLeft="26dp"
+                android:layout_marginLeft="0dp"
                 android:ems="10"
                 android:text="Description"
                 android:inputType="text"
@@ -85,7 +85,7 @@
                 android:layout_width="360dp"
                 android:layout_height="70dp"
                 android:layout_marginTop="370sp"
-                android:layout_marginLeft="26dp"
+                android:layout_marginLeft="0dp"
                 android:ems="10"
                 android:text="Current_user_name"
                 android:inputType="text"
@@ -166,7 +166,7 @@
 
             <Button
                 android:id="@+id/location"
-                android:layout_width="360dp"
+                android:layout_width="wrap_content"
                 android:layout_height="70dp"
                 android:layout_marginTop="770dp"
                 android:backgroundTint="#9C27B0"
