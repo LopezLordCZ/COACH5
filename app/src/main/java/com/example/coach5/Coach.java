@@ -85,6 +85,16 @@ public class Coach {
         if (this.getRate().toLowerCase().contains(str)) {
             result = true;
         }
+        if (this.getSkill1().toLowerCase().contains(str)) {
+            result = true;
+        }
+        if (this.getSkill2().toLowerCase().contains(str)) {
+            result = true;
+        }
+        if (this.getSkill3().toLowerCase().contains(str)) {
+            result = true;
+        }
+
         return result;
     }
 
