@@ -101,7 +101,7 @@
                 android:layout_marginTop="450dp"
                 android:ems="10"
                 android:text="price/hour"
-                android:inputType="numberDecimal"
+                android:inputType="number"
                 android:textSize="24sp"
                 app:layout_anchor="@+id/userName"
                 app:layout_anchorGravity="bottom|center"

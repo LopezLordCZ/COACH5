@@ -36,6 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +60,8 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
     private String fLocation;
     private Double fLat;
     private Double fLng;
+
+    ArrayList<Match> list;
 
     //get current user
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -101,6 +104,27 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
             String email = user.getEmail();
 
             //get database reference
+            DatabaseReference reference3 = FirebaseDatabase.getInstance().getReference("Matches");
+            reference3.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    list = new ArrayList<>();
+                    for (DataSnapshot info : snapshot.getChildren()) {
+
+                        Match match = info.getValue(Match.class);
+                        if (user.getUid().equals(match.userID)) {
+                            list.add(match);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+
             reference = FirebaseDatabase.getInstance().getReference().child("Users");
             reference.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -238,6 +262,17 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
     }
 
     public void updateData(String account, String name, String surname, String age, String email, String sport1, String sport2, String sport3, String skill1, String skill2, String Skill3, String location, Double lat, Double lng, boolean all){
+        DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference();
+
+        for (Match i : list){
+            Match newMatch = new Match(i.userID, i.coachID, name, i.coachName, i.getMessages());
+            Map<String, Object> testValues = newMatch.toMap();
+            Map<String, Object> childupdates1 = new HashMap<>();
+            childupdates1.put("Matches/"+i.userID+i.coachID, testValues);
+
+            reference2.updateChildren(childupdates1);
+        }
+
         String key = user.getUid();
         User update = new User(account, name, surname, age, email, sport1, sport2,sport3, skill1, skill2, Skill3, location, lat, lng);
         Map<String, Object> userValues = update.toMap();

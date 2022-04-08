@@ -30,6 +30,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,6 +54,8 @@ public class ProfilescreenCoach extends AppCompatActivity implements View.OnClic
     private String fupSkill2;
     private String fupSkill3;
     private String fupPrice;
+
+    ArrayList<Match> list;
 
     //get current coach
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -96,6 +99,26 @@ public class ProfilescreenCoach extends AppCompatActivity implements View.OnClic
             String email = user.getEmail();
 
             //get database reference
+            DatabaseReference reference3 = FirebaseDatabase.getInstance().getReference("Matches");
+            reference3.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    list = new ArrayList<>();
+                    for (DataSnapshot info : snapshot.getChildren()) {
+
+                        Match match = info.getValue(Match.class);
+                        if (user.getUid().equals(match.coachID)) {
+                            list.add(match);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
             reference = FirebaseDatabase.getInstance().getReference().child("Coaches");
             reference.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -128,6 +151,7 @@ public class ProfilescreenCoach extends AppCompatActivity implements View.OnClic
                             //set the front end name+age
                             current_name.setText(info.name);
                             current_age.setText(info.age);
+                            current_price.setText(info.price);
 
                             //set spinners
                             if (!info.sport1.equals("Null")) {
@@ -236,6 +260,18 @@ public class ProfilescreenCoach extends AppCompatActivity implements View.OnClic
     }
 
     public void updateData(String account, String name, String surname, String age, String email, String sport1, String sport2, String sport3, String skill1, String skill2, String Skill3, String location, String price, Double lat, Double lng, boolean all){
+        //code for storing the message in the database
+        DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference();
+
+        for (Match i : list){
+            Match newMatch = new Match(i.userID, i.coachID, i.userName, name, i.getMessages());
+            Map<String, Object> testValues = newMatch.toMap();
+            Map<String, Object> childupdates1 = new HashMap<>();
+            childupdates1.put("Matches/"+i.userID+i.coachID, testValues);
+
+            reference2.updateChildren(childupdates1);
+        }
+
         String key = user.getUid();
         System.out.println("update data");
         Coach update = new Coach(account, name, surname, age, email, sport1, sport2,sport3, skill1, skill2, Skill3, location, price, lat, lng);
