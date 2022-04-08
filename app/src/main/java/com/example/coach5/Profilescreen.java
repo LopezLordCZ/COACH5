@@ -199,11 +199,23 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
                     //                                          int[] grantResults)
                     // to handle the case where the user grants the permission. See the documentation
                     // for ActivityCompat#requestPermissions for more details.
+
+                    ActivityCompat.requestPermissions(Profilescreen.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                    ActivityCompat.requestPermissions(Profilescreen.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+
                     return;
                 }
-                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                Double upLat = location.getLatitude();
-                Double upLng = location.getLongitude();
+                Double upLat = 0.0;
+                Double upLng = 0.0;
+                if (locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) == null){
+                    System.out.println("cannot get last location");
+                } else {
+                    Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    upLat = location.getLatitude();
+                    upLng = location.getLongitude();
+                    System.out.println("location retrieved successfully");
+                }
+                
                 //button for saving the location
                 updateData(fAccount, fupName, fSurname, fupAge, fEmail, fupSport1, fupSport2, fupSport3, fupSkill1, fupSkill2, fupSkill3, fLocation, upLat, upLng, false);
                 break;
