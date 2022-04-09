@@ -7,13 +7,9 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -22,7 +18,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,11 +29,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Profilescreen extends AppCompatActivity implements View.OnClickListener {
@@ -61,7 +53,8 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
     private Double fLat;
     private Double fLng;
 
-    ArrayList<Match> list;
+    ArrayList<Match> list = new ArrayList<>();
+
 
     //get current user
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -124,6 +117,29 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
                 }
             });
 
+
+            for (Match i: list) {
+                ArrayList<Message> list3 = new ArrayList<>();
+                FirebaseDatabase.getInstance().getReference("Matches").child(i.userID + i.coachID).child("Messages").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        System.out.println(i.userID+i.coachID);
+                        //getting all the messages
+                        if (snapshot.exists()) {
+                            for (DataSnapshot child : snapshot.getChildren()) {
+                                Message message = child.getValue(Message.class);
+                                System.out.println(message);
+                                list3.add(message);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        //
+                    }
+                });
+            }
 
             reference = FirebaseDatabase.getInstance().getReference().child("Users");
             reference.addValueEventListener(new ValueEventListener() {
@@ -264,13 +280,11 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
     public void updateData(String account, String name, String surname, String age, String email, String sport1, String sport2, String sport3, String skill1, String skill2, String Skill3, String location, Double lat, Double lng, boolean all){
         DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference();
 
-        for (Match i : list){
-            Match newMatch = new Match(i.userID, i.coachID, name, i.coachName, i.getMessages());
-            Map<String, Object> testValues = newMatch.toMap();
+        for (Match i: list){
             Map<String, Object> childupdates1 = new HashMap<>();
-            childupdates1.put("Matches/"+i.userID+i.coachID, testValues);
+                    childupdates1.put("userName", name);
 
-            reference2.updateChildren(childupdates1);
+            reference2.child("Matches").child(i.userID+i.coachID).updateChildren(childupdates1);
         }
 
         String key = user.getUid();

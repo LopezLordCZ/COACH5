@@ -263,17 +263,14 @@ public class ProfilescreenCoach extends AppCompatActivity implements View.OnClic
         //code for storing the message in the database
         DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference();
 
-        for (Match i : list){
-            Match newMatch = new Match(i.userID, i.coachID, i.userName, name, i.getMessages());
-            Map<String, Object> testValues = newMatch.toMap();
+        for (Match i: list){
             Map<String, Object> childupdates1 = new HashMap<>();
-            childupdates1.put("Matches/"+i.userID+i.coachID, testValues);
+            childupdates1.put("coachName", name);
 
-            reference2.updateChildren(childupdates1);
+            reference2.child("Matches").child(i.userID+i.coachID).updateChildren(childupdates1);
         }
 
         String key = user.getUid();
-        System.out.println("update data");
         Coach update = new Coach(account, name, surname, age, email, sport1, sport2,sport3, skill1, skill2, Skill3, location, price, lat, lng);
         Map<String, Object> coachValues = update.toMap();
 
