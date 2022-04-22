@@ -29,13 +29,13 @@ import androidx.appcompat.widget.SearchView;
 
 public class Browse extends AppCompatActivity {
 
+    //Definition
     private DatabaseReference reference;
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     String userName;
     Double userLat;
     Double userLng;
-
     RecyclerView recyclerView;
     SearchView searchView;
     Slider slider;
@@ -49,16 +49,22 @@ public class Browse extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse);
 
+        //Firebase call
         mAuth = FirebaseAuth.getInstance();
+        //Reference Coach path
         reference = FirebaseDatabase.getInstance().getReference("Coaches");
 
+        //Search
         searchView = findViewById(R.id.action_search);
+        //Slider
         slider = findViewById(R.id.action_slider);
 
+        //Recycler View
         recyclerView = findViewById(R.id.recyclerViewCoaches);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        //Get current email
         String UserEmail = currentUser.getEmail();
 
         FirebaseDatabase.getInstance().getReference().child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -66,6 +72,7 @@ public class Browse extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot Dsnapshot: snapshot.getChildren()) {
                     User info = Dsnapshot.getValue(User.class);
+                    //Check there is required email in users path
                     if (UserEmail.equals(info.email)){
                         userName = info.name;
                         userLat = info.lat;
@@ -81,7 +88,6 @@ public class Browse extends AppCompatActivity {
         });
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -90,7 +96,6 @@ public class Browse extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
-
                         list = new ArrayList<>();
                         for (DataSnapshot child : snapshot.getChildren()) {
                             Coach coach = child.getValue(Coach.class);
@@ -141,23 +146,20 @@ public class Browse extends AppCompatActivity {
                     filterLocation(slider.getValue());
                 }
             });
-
-
-
         }
-
-
-
     }
 
-
+    //Search function
     private void search(String newText) {
         ArrayList<Coach> filterList = new ArrayList<>();
         ArrayList<String> filterApplied = new ArrayList<>();
         for (Coach coach : list) {
-            if (coach.searchCondition(newText)) { //filter condition
+            //Filter condition
+            if (coach.searchCondition(newText)) {
                 filterList.add(coach);
+                //Inform log
                 System.out.println(listIDemail.size());
+                //Loop through the array
                 for (int i = 0; i < listIDemail.size(); i++){
                     if (listIDemail.get(i)[0] == coach.email){
                         filterApplied.add(listIDemail.get(i)[1]);
@@ -165,16 +167,16 @@ public class Browse extends AppCompatActivity {
                 }
             }
         }
+        //Define new BrowseAdapter
         browseAdapter = new BrowseAdapter(filterList, filterApplied, userName);
         recyclerView.setAdapter(browseAdapter);
-
     }
 
-
-
+    //Location filter
     private void filterLocation(Float val) {
         ArrayList<Coach> filterList = new ArrayList<>();
         ArrayList<String> filterApplied = new ArrayList<>();
+        //Check user has location
         if (userLat == null){
             Toast toast = Toast.makeText(findViewById(R.id.browse).getContext(), "Update location to use all features", Toast.LENGTH_LONG);
             toast.show();
@@ -183,6 +185,7 @@ public class Browse extends AppCompatActivity {
 
             double d = -0.1;
 
+            //Update distance
             if (userLat != null && userLng != null && coach.getLat() != null && coach.getLng() != null) {
                 Double coachLat = coach.getLat();
                 Double coachLng = coach.getLng();
@@ -190,8 +193,10 @@ public class Browse extends AppCompatActivity {
                 d = dist.calcDistance(userLat, coachLat, userLng, coachLng);
             }
 
-            if (d < val) { // if distance is to coach is smaller than range slider value
-                filterList.add(coach); // add coach to filter list
+            //If distance is to coach is smaller than range slider value
+            if (d < val) {
+                filterList.add(coach);
+                //Add coach to filter list
                 for (int i = 0; i < listIDemail.size(); i++){
                     if (listIDemail.get(i)[0] == coach.email){
                         filterApplied.add(listIDemail.get(i)[1]);

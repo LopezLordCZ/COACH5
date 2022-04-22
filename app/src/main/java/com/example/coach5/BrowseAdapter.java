@@ -1,8 +1,5 @@
 package com.example.coach5;
 
-import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,20 +28,21 @@ import java.util.Map;
 
 public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHolder> {
 
+    //Definition
     ArrayList<Coach> list;
     ArrayList<String> listId;
     String userName;
 
-    //get current user
+    //Get current user
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
 
+    //BrowseAdapter
     public BrowseAdapter(ArrayList<Coach> list, ArrayList<String> listId, String userName) {
         this.listId = listId;
         this.list = list;
         this.userName = userName;
     }
-
 
     @NonNull
     @Override
@@ -57,7 +55,8 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        Coach coach = list.get(position); //get coach
+        //Get coach
+        Coach coach = list.get(position);
         String currentUid = currentUser.getUid();
 
         holder.coachID = listId.get(position);
@@ -104,7 +103,8 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
             }
         });
 
-        if (coach.getSport2().equals("Null")) { //make sport2 invisible if null
+        //make sport2 invisible if null
+        if (coach.getSport2().equals("Null")) {
             holder.rowSport2.setVisibility(View.GONE);
             holder.rowSkill2.setVisibility(View.GONE);
         } else {
@@ -112,7 +112,8 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
             holder.skill2.setText(coach.getSkill2());
         }
 
-        if (coach.getSport3().equals("Null")) { //make sport3 invisible if null
+        //make sport3 invisible if null
+        if (coach.getSport3().equals("Null")) {
             holder.rowSport3.setVisibility(View.GONE);
             holder.rowSkill3.setVisibility(View.GONE);
         } else {
@@ -120,7 +121,8 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
             holder.skill3.setText(coach.getSkill3());
         }
 
-        if (coach.getRate().equals("Null")) { //make rate invisible if null
+        //make rate invisible if null
+        if (coach.getRate().equals("Null")) {
             holder.rowRate.setVisibility(View.GONE);
         } else {
             holder.rate.setText(coach.getRate());
@@ -181,6 +183,7 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
                                 String matchId = "";
                                 for (DataSnapshot contact: snapshot.getChildren()){
                                     matchId = contact.getKey();
+                                    //Check if contact is not already made
                                     if (matchId.equals(Uid+coachId)) {
                                         Toast toast = Toast.makeText(v.getContext(), "Contact already added!", Toast.LENGTH_LONG);
                                         toast.show();

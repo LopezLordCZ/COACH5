@@ -241,7 +241,8 @@ public class ProfilescreenCoach extends AppCompatActivity implements View.OnClic
                 updateData(fAccount, fupName, fSurname, fupAge, fEmail, fupSport1, fupSport2, fupSport3, fupSkill1, fupSkill2, fupSkill3, fLocation, fupPrice, upLat, upLng, false);
                 break;
 
-            case R.id.profile: //button for saving
+            //button for saving
+            case R.id.profile:
 
                 //get data
                 String upName = current_name.getText().toString();
