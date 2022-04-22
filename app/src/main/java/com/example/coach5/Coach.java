@@ -7,13 +7,16 @@ import java.util.Map;
 
 public class Coach {
 
+    //Definition
     public String finalAccountType, name, surname, age, email, sport1, sport2, sport3, sport1Skill, sport2Skill, sport3Skill, location, price;
     public Double lat, lng;
 
+    //User call
     public Coach() {
 
     }
 
+    //User creation
     public Coach(String finalAccountType, String name, String surname, String age, String email, String sport1, String sport2, String sport3, String sport1Skill, String sport2Skill, String sport3Skill, String location, String price, Double lat, Double lng) {
         this.finalAccountType = finalAccountType;
         this.name = name;
@@ -32,6 +35,7 @@ public class Coach {
         this.lng = lng;
     }
 
+    //Hashmap to use for profile edit
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
@@ -54,6 +58,7 @@ public class Coach {
         return result;
     }
 
+    //Call for attributes
     public String getSport1() { return sport1; }
     public String getSport2() { return sport2; }
     public String getSport3() { return sport3; }
@@ -68,29 +73,38 @@ public class Coach {
     public Double getLng() { return lng; }
 
 
+    //Search criteria
     public Boolean searchCondition(String str) {
         Boolean result = false;
+        //Name
         if (this.getName().toLowerCase().contains(str)) {
             result = true;
         }
+        //Sport1
         if (this.getSport1().toLowerCase().contains(str)) {
             result = true;
         }
+        //Sport2
         if (this.getSport2().toLowerCase().contains(str)) {
             result = true;
         }
+        //Sport3
         if (this.getSport3().toLowerCase().contains(str)) {
             result = true;
         }
+        //Rate
         if (this.getRate().toLowerCase().contains(str)) {
             result = true;
         }
+        //Skill1
         if (this.getSkill1().toLowerCase().contains(str)) {
             result = true;
         }
+        //Skill2
         if (this.getSkill2().toLowerCase().contains(str)) {
             result = true;
         }
+        //Skill3
         if (this.getSkill3().toLowerCase().contains(str)) {
             result = true;
         }

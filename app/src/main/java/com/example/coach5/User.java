@@ -1,20 +1,20 @@
 package com.example.coach5;
-
 import com.google.firebase.database.Exclude;
-
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class User implements Serializable {
 
+    //Definition
     public String finalAccountType, name, surname, age, email, sport1, sport2, sport3, sport1Skill, sport2Skill, sport3Skill, location;
     public Double lat, lng;
 
+    //User call
     public User() {
     }
 
+    //User creation
     public User(String finalAccountType, String name, String surname, String age, String email, String sport1, String sport2, String sport3, String sport1Skill, String sport2Skill, String sport3Skill, String location, Double lat, Double lng) {
         this.finalAccountType = finalAccountType;
         this.name = name;
@@ -33,11 +33,15 @@ public class User implements Serializable {
 
     }
 
+    //Call to get user name
     public String getName() { return name; }
+    //Call to get latitude
     public Double getLat() { return lat; }
+    //Call to get longitude
     public Double getLng() { return lng; }
 
 
+    //Hashmap to use for profile edit
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();

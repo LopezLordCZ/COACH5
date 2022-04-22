@@ -20,10 +20,12 @@ import com.google.android.gms.location.LocationServices;
 
     public class LocationService extends Service {
         FusedLocationProviderClient fusedLocationProviderClient;
-        LocationCallback locationCallback;
         //Location for distance
-        public double latitudeUser; // Latitude
-        public double longitudeUser; // Longitude
+        LocationCallback locationCallback;
+        //Latitude
+        public double latitudeUser;
+        //Longitude
+        public double longitudeUser;
 
         @Override
         public IBinder onBind(Intent intent) {
@@ -34,10 +36,12 @@ import com.google.android.gms.location.LocationServices;
         public void onCreate() {
             super.onCreate();
             fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+            //Get location
             locationCallback = new LocationCallback() {
                 @Override
                 public void onLocationResult(@NonNull LocationResult locationResult) {
                     super.onLocationResult(locationResult);
+                    //Print latitude and longitude
                     Log.d("mylog", "Lat is: " + locationResult.getLastLocation().getLatitude()
                             + ", " + "Lng is: " + locationResult.getLastLocation().getLongitude());
 
@@ -49,11 +53,14 @@ import com.google.android.gms.location.LocationServices;
 
         @Override
         public int onStartCommand(Intent intent, int flags, int startId) {
+            //Get location
             requestLocation();
+            //On start
             return super.onStartCommand(intent, flags, startId);
         }
 
         private void requestLocation() {
+            //To get new location
             LocationRequest locationRequest = new LocationRequest();
             //locationRequest.setInterval(20000);
             locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
@@ -69,12 +76,6 @@ import com.google.android.gms.location.LocationServices;
             }
             fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
         }
-
-
-
-
-
-
     }
 
 

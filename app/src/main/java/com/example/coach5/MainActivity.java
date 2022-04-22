@@ -327,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Boolean acc = sp.getBoolean("pref_coach", false);
             coachButton.setChecked(acc);
         }
-        //Email baf
+        //Email bar
         if (sp.contains("pref_name")) {
             String u = sp.getString("pref_name", "not found.");
             editTextEmail.setText(u.toString());

@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -25,59 +24,70 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class UserRegister extends AppCompatActivity implements View.OnClickListener {
 
+    //Definition
     private TextView title, register;
     private EditText editTextName, editTextSurname, editTextAge, editTextEmail, editTextPassword, editTextRepeatPassword;
     private RadioButton user, coach;
     private ProgressBar progressBar;
-
     private DatabaseReference reference, referenceCoach;
     private FirebaseAuth mAuth;
 
+    //On creation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_register);
 
+        //Firebase connection
         mAuth = FirebaseAuth.getInstance();
+        //Firebase user path
         reference = FirebaseDatabase.getInstance().getReference("Users");
+        //Firebase coach path
         referenceCoach = FirebaseDatabase.getInstance().getReference("Coaches");
-
+        //Title sign
         title = (TextView) findViewById(R.id.title);
         title.setOnClickListener(this);
-
+        //Register button
         register = (Button) findViewById(R.id.register);
         register.setOnClickListener(this);
-
+        //Name bar
         editTextName = (EditText) findViewById(R.id.userName);
+        //Surname bar
         editTextSurname = (EditText) findViewById(R.id.userSurname);
+        //Age bar
         editTextAge = (EditText) findViewById(R.id.userAge);
+        //Email bar
         editTextEmail = (EditText) findViewById(R.id.userEmail);
+        //Password bar
         editTextPassword = (EditText) findViewById(R.id.userPassword);
+        //Repeat password bar
         editTextRepeatPassword = (EditText) findViewById(R.id.userRepeatPassword);
-
+        //User radio button
         user = (RadioButton) findViewById(R.id.User);
+        //Coach radio button
         coach = (RadioButton) findViewById(R.id.Coach);
-
+        //Progress bar
         progressBar = (ProgressBar) findViewById(R.id.registerLoading);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            //
             case R.id.title:
+                //Redirect to login
                 startActivity(new Intent(this, MainActivity.class));
                 break;
             case R.id.register:
+                //registerUser function
                 registerUser();
                 break;
         }
     }
 
+    //Register function called by register button
     private void registerUser() {
         String name = editTextName.getText().toString().trim();
         String surname = editTextSurname.getText().toString().trim();
@@ -97,71 +107,83 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
         String price = "Null";
         final String[] accountType = {null};
 
+        //Check name was inputted
         if (name.isEmpty()) {
             editTextName.setError("Name is required!");
             editTextName.requestFocus();
             return;
         }
 
+        //Check surname was inputted
         if (surname.isEmpty()) {
             editTextSurname.setError("Surname is required!");
             editTextSurname.requestFocus();
             return;
         }
 
+        //Check age was inputted
         if (age.isEmpty()) {
             editTextAge.setError("Age is required!");
             editTextAge.requestFocus();
             return;
         }
 
+        //Check email is inputted
         if (email.isEmpty()) {
             editTextEmail.setError("Email is required!");
             editTextEmail.requestFocus();
             return;
         }
 
+        //Check email is valid
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             editTextEmail.setError("Provide valid email");
             editTextEmail.requestFocus();
             return;
         }
 
+        //Check password is inputted
         if (password.isEmpty()) {
             editTextPassword.setError("Password is required!");
             editTextPassword.requestFocus();
             return;
         }
 
+        //Checks password is minimum 8 characters
         if (password.length() < 8) {
             editTextPassword.setError("Password must contain at least 8 characters");
             editTextPassword.requestFocus();
             return;
         }
 
+        //Checks password is maximum 16 characters
         if (password.length() > 16) {
             editTextPassword.setError("Password must contain at most 16 characters");
             editTextPassword.requestFocus();
             return;
         }
 
+        //Check repeatPassword was inputted
         if (repeatPassword.isEmpty()) {
             editTextRepeatPassword.setError("Repeat the password!");
             editTextRepeatPassword.requestFocus();
             return;
         }
 
+        //Check if password and repeat password match
         if (!repeatPassword.equals(password)) {
             editTextRepeatPassword.setError("Passwords does not match!");
             editTextRepeatPassword.requestFocus();
         }
 
+        //Define account type
         if (user.isChecked()) {
             accountType[0] = "User";
         } else if (coach.isChecked()) {
             accountType[0] = "Coach";
         }
 
+        //Check email was not yet registered as a user
         reference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -178,6 +200,7 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        //Check email was not yet registered as a coach
         referenceCoach.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -194,14 +217,19 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        //Make progress bar visible
         progressBar.setVisibility(View.VISIBLE);
         String finalAccountType = accountType[0];
+        //Firebase user/coach create function
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        //If registered account is user
                         if (accountType[0].equals("User")) {
+                            //If registration is successful
                             if (task.isSuccessful()) {
+                                //Create new instance of user in the database
                                 User user = new User(finalAccountType, name, surname, age, email, sport1, sport2, sport3, sport1Skill, sport2Skill, sport3Skill, location, lat, lng);
 
                                 FirebaseDatabase.getInstance().getReference("Users")
@@ -216,15 +244,20 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
                                         } else {
                                             Toast.makeText(UserRegister.this, "Registration failed, try again!", Toast.LENGTH_LONG).show();
                                         }
+                                        //Stop progressbar
                                         progressBar.setVisibility(View.GONE);
                                     }
                                 });
                             } else {
+                                //If registration failed
                                 Toast.makeText(UserRegister.this, "Registration failed, try again!", Toast.LENGTH_LONG).show();
                                 progressBar.setVisibility(View.GONE);
                             }
+                            //If registered account is coach
                         } else if (accountType[0].equals("Coach")) {
+                            //If registration is successful
                             if (task.isSuccessful()) {
+                                //Create new instance of coach in the database
                                 Coach coach = new Coach(finalAccountType, name, surname, age, email, sport1, sport2, sport3, sport1Skill, sport2Skill, sport3Skill, location, price, lat, lng);
 
                                 FirebaseDatabase.getInstance().getReference("Coaches")
@@ -239,10 +272,12 @@ public class UserRegister extends AppCompatActivity implements View.OnClickListe
                                         } else {
                                             Toast.makeText(UserRegister.this, "Registration failed, try again!", Toast.LENGTH_LONG).show();
                                         }
+                                        //Stop progressbar
                                         progressBar.setVisibility(View.GONE);
                                     }
                                 });
                             } else {
+                                //If registration failed
                                 Toast.makeText(UserRegister.this, "Registration failed, try again!", Toast.LENGTH_LONG).show();
                                 progressBar.setVisibility(View.GONE);
                             }
