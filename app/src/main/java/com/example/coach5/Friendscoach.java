@@ -23,13 +23,18 @@ import java.util.ArrayList;
 
 public class Friendscoach extends AppCompatActivity implements View.OnClickListener  {
 
-    //setting up variables
+    //setting up variables for data base
     private DatabaseReference reference;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+    //variable for imageview
     private ImageView back;
 
+    //variables for view
     RecyclerView recyclerView;
     FriendsAdapter friendsAdapter;
+
+    //variables for data
     ArrayList<Match> list;
 
     @Override
@@ -37,12 +42,15 @@ public class Friendscoach extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends);
 
+        //get right database reference
         reference = FirebaseDatabase.getInstance().getReference("Matches");
 
+        //setup the recyclerview that contains the matches
         recyclerView = findViewById(R.id.recyclerViewMatches);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        //setup the back button
         back = (ImageView) findViewById(R.id.backbutton);
         back.setOnClickListener(this);
     }
@@ -55,15 +63,16 @@ public class Friendscoach extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
-
-                        //looking for all the matches
+                        //create a new list
                         list = new ArrayList<>();
+                        //add every match to the list
                         for (DataSnapshot child : snapshot.getChildren()) {
                             Match match = child.getValue(Match.class);
                             if (user.getUid().equals(match.coachID)){
                                 list.add(match);
                             }
                         }
+                        //use the list to create the friends adapter
                         friendsAdapter = new FriendsAdapter(getBaseContext(), list);
                         recyclerView.setAdapter(friendsAdapter);
                     }
