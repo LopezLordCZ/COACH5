@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Profilescreen extends AppCompatActivity implements View.OnClickListener {
+    //set up variables
     private ImageView back;
     private Button save;
     private Button uLocation;
@@ -103,7 +104,7 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     list = new ArrayList<>();
                     for (DataSnapshot info : snapshot.getChildren()) {
-
+                        //getting all matches connected to this user
                         Match match = info.getValue(Match.class);
                         if (user.getUid().equals(match.userID)) {
                             list.add(match);
@@ -113,34 +114,11 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                //empty required function
                 }
             });
 
-
-            for (Match i: list) {
-                ArrayList<Message> list3 = new ArrayList<>();
-                FirebaseDatabase.getInstance().getReference("Matches").child(i.userID + i.coachID).child("Messages").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        System.out.println(i.userID+i.coachID);
-                        //getting all the messages
-                        if (snapshot.exists()) {
-                            for (DataSnapshot child : snapshot.getChildren()) {
-                                Message message = child.getValue(Message.class);
-                                System.out.println(message);
-                                list3.add(message);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        //
-                    }
-                });
-            }
-
+            //get user info
             reference = FirebaseDatabase.getInstance().getReference().child("Users");
             reference.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -200,6 +178,7 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
             });
         }
 
+        //setup buttons
         uLocation = (Button) findViewById(R.id.location);
         uLocation.setOnClickListener(this);
         save = (Button) findViewById(R.id.profile);
@@ -278,8 +257,10 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
     }
 
     public void updateData(String account, String name, String surname, String age, String email, String sport1, String sport2, String sport3, String skill1, String skill2, String Skill3, String location, Double lat, Double lng, boolean all){
+        //update users data
         DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference();
 
+        //update the username also for each match
         for (Match i: list){
             Map<String, Object> childupdates1 = new HashMap<>();
                     childupdates1.put("userName", name);
@@ -287,10 +268,12 @@ public class Profilescreen extends AppCompatActivity implements View.OnClickList
             reference2.child("Matches").child(i.userID+i.coachID).updateChildren(childupdates1);
         }
 
+        //get the new info for the profile
         String key = user.getUid();
         User update = new User(account, name, surname, age, email, sport1, sport2,sport3, skill1, skill2, Skill3, location, lat, lng);
-        Map<String, Object> userValues = update.toMap();
 
+        //update the info in the database
+        Map<String, Object> userValues = update.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put(key, userValues);
 

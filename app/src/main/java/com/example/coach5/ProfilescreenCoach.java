@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ProfilescreenCoach extends AppCompatActivity implements View.OnClickListener {
+    //setting up some variables
     private ImageView back;
     private Button save;
     private Button uLocation;
@@ -105,7 +106,7 @@ public class ProfilescreenCoach extends AppCompatActivity implements View.OnClic
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     list = new ArrayList<>();
                     for (DataSnapshot info : snapshot.getChildren()) {
-
+                        //getting all the matches connected to this user
                         Match match = info.getValue(Match.class);
                         if (user.getUid().equals(match.coachID)) {
                             list.add(match);
@@ -115,7 +116,7 @@ public class ProfilescreenCoach extends AppCompatActivity implements View.OnClic
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                //empty but required function
                 }
             });
 

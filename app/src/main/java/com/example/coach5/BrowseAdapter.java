@@ -59,6 +59,7 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
         Coach coach = list.get(position);
         String currentUid = currentUser.getUid();
 
+        //get data
         holder.coachID = listId.get(position);
         holder.coach = coach;
         holder.currentUser = currentUser;
@@ -150,12 +151,17 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            //setup the sport fields
             sport1 = itemView.findViewById(R.id.tvSport1);
             sport2 = itemView.findViewById(R.id.tvSport2);
             sport3 = itemView.findViewById(R.id.tvSport3);
+
+            //setup the skill fields
             skill1 = itemView.findViewById(R.id.tvSkill1);
             skill2 = itemView.findViewById(R.id.tvSkill2);
             skill3 = itemView.findViewById(R.id.tvSkill3);
+
+            //setup the other data fields
             name = itemView.findViewById(R.id.tvName);
             age = itemView.findViewById(R.id.tvAge);
             rate = itemView.findViewById(R.id.tvRate);
@@ -167,6 +173,7 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
             rowSkill3 = itemView.findViewById(R.id.rowSkill3);
             rowRate = itemView.findViewById(R.id.rowRate);
 
+            //setting up the contact button
             contactButton = itemView.findViewById(R.id.contactButton);
             contactButton.setOnClickListener(v -> {
                 if (v.getId() == R.id.contactButton) {
@@ -191,15 +198,16 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.MyViewHold
                                     }
                                 }
                                 if (!matchExists){
+                                    //if match doesnt exist, create new match
                                     Message message = new Message("Boundary security", "Boundary security", "Send a messsage to start chatting!");
                                     list2.add(message);
+                                    //store match in data base
                                     Match newMatch = new Match(Uid, coachId, userName, coach.name, list2);
                                     Map<String, Object> testValues = newMatch.toMap();
                                     Map<String, Object> childupdates1 = new HashMap<>();
                                     childupdates1.put("Matches/"+Uid+coachId, testValues);
-
                                     reference2.updateChildren(childupdates1);
-
+                                    //show user match has been made
                                     Toast toast = Toast.makeText(v.getContext(), "New contact has been added!", Toast.LENGTH_LONG);
                                     toast.show();
 
